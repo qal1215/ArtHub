@@ -7,8 +7,13 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY . .
+COPY ["ArtHub.API/ArtHub.API.csproj", "ArtHub.API/"]
+COPY ["ArtHub.Service/ArtHub.Service.csproj", "ArtHub.Service/"]
+COPY ["ArtHub.BusinessObject/ArtHub.BusinessObject.csproj", "ArtHub.BusinessObject/"]
+COPY ["ArtHub.Repository/ArtHub.Repository.csproj", "ArtHub.Repository/"]
+COPY ["ArtHub.DAO/ArtHub.DAO.csproj", "ArtHub.DAO/"]
 RUN dotnet restore "./ArtHub.API/./ArtHub.API.csproj"
+COPY . .
 WORKDIR "/src/ArtHub.API"
 RUN dotnet build "./ArtHub.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
