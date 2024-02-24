@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SilverShopBusinessObject\ArtHub.BusinessObject.csproj" />
-    <ProjectReference Include="..\SilverShopRepository\ArtHub.Repository.csproj" />
+    <ProjectReference Include="..\ArtHub.BusinessObject\ArtHub.BusinessObject.csproj" />
+    <ProjectReference Include="..\ArtHub.Repository\ArtHub.Repository.csproj" />
   </ItemGroup>
 
 </Project>

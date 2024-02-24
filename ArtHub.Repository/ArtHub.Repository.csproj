@@ -7,6 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SilverShopBusinessObject\ArtHub.BusinessObject.csproj" />
+    <ProjectReference Include="..\ArtHub.DAO\ArtHub.DAO.csproj" />
   </ItemGroup>
 </Project>
