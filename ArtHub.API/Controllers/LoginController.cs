@@ -1,4 +1,5 @@
-﻿using ArtHub.Service;
+﻿using ArtHub.DAO.AccountDTO;
+using ArtHub.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -26,24 +27,24 @@ namespace ArtHubAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("/register")]
-        public async Task<IActionResult> Register([FromBody] BranchAccount login)
+        public async Task<IActionResult> Register([FromBody] BranchAccount registed)
         {
 
-            if (login == null
-                || string.IsNullOrEmpty(login.EmailAddress)
-                || string.IsNullOrEmpty(login.EmailAddress)
-                || string.IsNullOrEmpty(login.FullName)
+            if (registed == null
+                || string.IsNullOrEmpty(registed.EmailAddress)
+                || string.IsNullOrEmpty(registed.EmailAddress)
+                || string.IsNullOrEmpty(registed.FullName)
                 )
             {
                 return BadRequest("Invalid client request");
             }
 
             IActionResult response = BadRequest();
-            var userAdded = await _accountService.AddBranchAccount(login);
+            var userAdded = await _accountService.AddBranchAccount(registed);
 
             if (userAdded)
             {
-                var tokenString = GenerateJSONWebToken(login);
+                var tokenString = GenerateJSONWebToken(registed);
                 response = Ok(new { token = tokenString });
             }
 
@@ -52,7 +53,7 @@ namespace ArtHubAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("")]
-        public async Task<IActionResult> LoginAsync([FromBody] BranchAccount login)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginDTO login)
         {
             if (login == null
                 || string.IsNullOrEmpty(login.EmailAddress)

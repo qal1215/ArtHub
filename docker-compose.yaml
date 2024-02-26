@@ -1,0 +1,13 @@
+services:
+  db:
+    build: ./DataDB/
+    ports:
+      - '1455:1433'
+    container_name: database
+  api:
+    build: ./
+    ports:
+      - '5000:80'
+    container_name: api
+    depends_on:
+      - db
