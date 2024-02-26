@@ -1,9 +1,10 @@
-﻿using ArtHub.DAO.AccountDTO;
+﻿using ArtHub.BusinessObject;
+using ArtHub.DAO.Account;
 using ArtHub.Service;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using SilverShopBusinessObject;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,41 +19,63 @@ namespace ArtHubAPI.Controllers
 
         private readonly IAccountService _accountService;
 
-        public LoginController(IConfiguration config, IAccountService accountService)
+        private readonly IMapper _mapper;
+
+        public LoginController(IMapper mapper, IConfiguration config, IAccountService accountService)
         {
             _config = config;
             _accountService = accountService;
-
+            _mapper = mapper;
         }
 
         [AllowAnonymous]
         [HttpPost("/register")]
-        public async Task<IActionResult> Register([FromBody] BranchAccount registed)
+        public async Task<IActionResult> Register([FromBody] Register registed)
         {
 
             if (registed == null
                 || string.IsNullOrEmpty(registed.EmailAddress)
-                || string.IsNullOrEmpty(registed.EmailAddress)
+                || string.IsNullOrEmpty(registed.Password)
+                || string.IsNullOrEmpty(registed.ConfirmPassword)
                 || string.IsNullOrEmpty(registed.FullName)
                 )
             {
                 return BadRequest("Invalid client request");
             }
 
-            IActionResult response = BadRequest();
-            var userAdded = await _accountService.AddBranchAccount(registed);
-
-            if (userAdded)
+            if (registed.Password != registed.ConfirmPassword)
             {
-                var tokenString = GenerateJSONWebToken(registed);
-                response = Ok(new { token = tokenString });
+                return BadRequest("Password and Confirm Password do not match");
+            }
+
+            var isExisted = await _accountService.IsExistedAccount(registed.EmailAddress);
+            if (isExisted)
+            {
+                return BadRequest("Email is registed!");
+            }
+
+            IActionResult response = BadRequest();
+            try
+            {
+                var account = _mapper.Map<Member>(registed);
+                var userAdded = await _accountService.AddBranchAccount(account);
+
+                if (userAdded)
+                {
+                    var tokenString = GenerateJSONWebToken(account.EmailAddress!);
+                    response = Ok(new { token = tokenString });
+                }
+            }
+            catch (Exception e)
+            {
+                response = BadRequest(e.Message);
             }
 
             return response;
         }
 
         [AllowAnonymous]
-        [HttpPost("")]
+        [HttpPost("/login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginDTO login)
         {
             if (login == null
@@ -68,14 +91,14 @@ namespace ArtHubAPI.Controllers
 
             if (user != null)
             {
-                var tokenString = GenerateJSONWebToken(user);
+                var tokenString = GenerateJSONWebToken(user.EmailAddress!);
                 response = Ok(new { token = tokenString });
             }
 
             return response;
         }
 
-        private string GenerateJSONWebToken(BranchAccount user)
+        private string GenerateJSONWebToken(string emailAddress)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -84,7 +107,7 @@ namespace ArtHubAPI.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Email, user.EmailAddress!)
+                    new Claim(JwtRegisteredClaimNames.Email, emailAddress)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = credentials,

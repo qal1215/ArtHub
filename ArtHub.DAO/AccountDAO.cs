@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SilverShopBusinessObject;
+﻿using ArtHub.BusinessObject;
+using Microsoft.EntityFrameworkCore;
 
 namespace SilverShopDAO
 {
@@ -27,31 +27,31 @@ namespace SilverShopDAO
             }
         }
 
-        public async Task<List<BranchAccount>> GetBranchAccountsAsync()
+        public async Task<List<Member>> GetBranchAccountsAsync()
         {
-            return await dbContext.BranchAccounts.ToListAsync();
+            return await dbContext.Members.ToListAsync();
         }
 
-        public async Task AddBranchAccountAsync(BranchAccount branchAccount)
+        public async Task AddBranchAccountAsync(Member branchAccount)
         {
             await dbContext.AddAsync(branchAccount);
             dbContext.SaveChanges();
         }
 
-        public async Task<BranchAccount?> GetBranchAccountAsync(string email)
+        public async Task<Member?> GetBranchAccountAsync(string email)
         {
-            return await dbContext.BranchAccounts.FirstOrDefaultAsync(m => m.EmailAddress!.Equals(email));
+            return await dbContext.Members.FirstOrDefaultAsync(m => m.EmailAddress!.Equals(email));
         }
 
         public async Task<bool> IsExistedEmail(string mail)
         {
-            return await dbContext.BranchAccounts.AnyAsync(a => a.EmailAddress!.Equals(mail));
+            return await dbContext.Members.AnyAsync(a => a.EmailAddress!.Equals(mail));
         }
 
-        public async Task<BranchAccount?> GetBranchAccountAsync(string email, string password)
+        public async Task<Member?> GetBranchAccountAsync(string email, string password)
         {
-            return await dbContext.BranchAccounts
-                .FirstOrDefaultAsync(m => m.EmailAddress!.Equals(email) && m.AccountPassword!.Equals(password));
+            return await dbContext.Members
+                .FirstOrDefaultAsync(m => m.EmailAddress!.Equals(email) && m.Password!.Equals(password));
         }
     }
 }

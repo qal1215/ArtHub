@@ -1,4 +1,4 @@
-﻿using SilverShopBusinessObject;
+﻿using ArtHub.BusinessObject;
 using SilverShopRepository;
 
 namespace ArtHub.Service
@@ -12,7 +12,8 @@ namespace ArtHub.Service
             _accountRepository = new AccountRepository();
         }
 
-        public async Task<bool> AddBranchAccount(BranchAccount branchAccount)
+
+        public async Task<bool> AddBranchAccount(Member branchAccount)
         {
             try
             {
@@ -32,7 +33,7 @@ namespace ArtHub.Service
             }
         }
 
-        public async Task<BranchAccount?> LoginAsync(string email, string password)
+        public async Task<Member?> LoginAsync(string email, string password)
         {
             try
             {
@@ -50,7 +51,7 @@ namespace ArtHub.Service
             }
         }
 
-        public async Task<List<BranchAccount>?> GetBranchAccountsAsync()
+        public async Task<List<Member>?> GetBranchAccountsAsync()
         {
             try
             {
@@ -61,6 +62,12 @@ namespace ArtHub.Service
             {
                 return null;
             }
+        }
+
+        public async Task<bool> IsExistedAccount(string email)
+        {
+            var isExistedEmail = await _accountRepository.IsExistedEmail(email);
+            return isExistedEmail;
         }
     }
 }

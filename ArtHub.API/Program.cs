@@ -1,4 +1,6 @@
-﻿using ArtHub.Service;
+﻿using ArtHub.DAO.Mapper;
+using ArtHub.Service;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OData;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +15,14 @@ builder.Services.AddControllers().AddOData(options => options.Select().Filter().
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddEndpointsApiExplorer();
+
+// Config AutoMapper
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new AutoMapperProfile());
+});
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -59,11 +69,6 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//}
 
 app.UseSwagger();
 app.UseSwaggerUI();

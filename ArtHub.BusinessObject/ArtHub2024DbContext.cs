@@ -1,10 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace SilverShopBusinessObject;
+namespace ArtHub.BusinessObject;
 
 public partial class ArtHub2024DbContext : DbContext
 {
+    public virtual DbSet<Member> Members { get; set; }
+
+    public virtual DbSet<Post> Posts { get; set; }
+
+    public virtual DbSet<Comment> Comments { get; set; }
+
+    public virtual DbSet<Rating> Ratings { get; set; }
+
+    public virtual DbSet<Artwork> Artworks { get; set; }
+
+    public virtual DbSet<FollowInfo> FollowInfos { get; set; }
+
+    public virtual DbSet<Order> Orders { get; set; }
+
+    public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+
     public ArtHub2024DbContext()
     {
     }
@@ -13,9 +29,6 @@ public partial class ArtHub2024DbContext : DbContext
         : base(options)
     {
     }
-
-    public virtual DbSet<BranchAccount> BranchAccounts { get; set; }
-
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer(GetConnectionString());
@@ -33,21 +46,6 @@ public partial class ArtHub2024DbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<BranchAccount>(entity =>
-        {
-            entity.HasKey(e => e.AccountId).HasName("PK__BranchAc__349DA586594E6CF1");
-
-            entity.ToTable("BranchAccount");
-
-            entity.HasIndex(e => e.EmailAddress, "UQ__BranchAc__49A14740928503E3").IsUnique();
-
-            entity.Property(e => e.AccountId)
-                .HasColumnName("AccountID");
-            entity.Property(e => e.AccountPassword).HasMaxLength(40);
-            entity.Property(e => e.EmailAddress).HasMaxLength(60);
-            entity.Property(e => e.FullName).HasMaxLength(60);
-        });
-
         OnModelCreatingPartial(modelBuilder);
     }
 
