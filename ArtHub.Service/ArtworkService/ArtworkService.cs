@@ -14,6 +14,8 @@ namespace ArtHub.Service.ArtworkService
 
         public async Task<Artwork> CreateArtwork(Artwork artwork)
         {
+            artwork.ArtworkDate = DateTime.Now;
+            artwork.ArtworkRating = 0;
             return await _artworkRepository.CreateArtwork(artwork);
         }
 
@@ -39,7 +41,7 @@ namespace ArtHub.Service.ArtworkService
 
         public async Task<IEnumerable<Artwork>> GetArtworksByTitle(string title)
         {
-            return await _artworkRepository.GetArtworkPredicate(a => a.ArtworkName.Contains(title));
+            return await _artworkRepository.GetArtworkPredicate(a => a.Name.Contains(title));
         }
 
         public async Task<Artwork?> UpdateArtwork(Artwork artwork)

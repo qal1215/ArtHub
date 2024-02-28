@@ -1,6 +1,6 @@
-﻿namespace ArtHub.DAO.Account
+﻿namespace ArtHub.DAO.AccountDTO
 {
-    public class AccountDTO
+    public class ViewAccountDTO
     {
         public int? AccountId { get; set; }
         public string EmailAddress { get; set; } = null!;

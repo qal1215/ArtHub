@@ -4,6 +4,7 @@ using ArtHub.BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtHub.BusinessObject.Migrations
 {
     [DbContext(typeof(ArtHub2024DbContext))]
-    partial class ArtHub2024DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240228195105_AddFieldArtwork")]
+    partial class AddFieldArtwork
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,16 +39,23 @@ namespace ArtHub.BusinessObject.Migrations
                     b.Property<DateTime>("ArtworkDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ArtworkDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ArtworkImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ArtworkName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("ArtworkPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<float>("ArtworkRating")
                         .HasColumnType("real");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsBuyAvailable")
                         .HasColumnType("bit");
@@ -53,12 +63,8 @@ namespace ArtHub.BusinessObject.Migrations
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.HasKey("ArtworkID");
 

@@ -1,5 +1,6 @@
 ﻿using ArtHub.DAO.Mapper;
 using ArtHub.Service;
+using ArtHub.Service.ArtworkService;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OData;
@@ -13,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddOData(options => options.Select().Filter().OrderBy().Count().SetMaxTop(100).Expand().Filter());
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IArtworkService, ArtworkService>();
 
 builder.Services.AddEndpointsApiExplorer();
 

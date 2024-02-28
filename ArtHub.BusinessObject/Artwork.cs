@@ -7,13 +7,13 @@ namespace ArtHub.BusinessObject
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ArtworkID { get; set; }
 
-        public string ArtworkName { get; set; }
+        public string Name { get; set; } = null!;
 
-        public string ArtworkDescription { get; set; }
+        public string Description { get; set; }
 
-        public string ArtworkImage { get; set; }
+        public string Image { get; set; } = null!;
 
-        public decimal ArtworkPrice { get; set; }
+        public decimal Price { get; set; }
 
         public int ArtistID { get; set; }
 
@@ -22,6 +22,8 @@ namespace ArtHub.BusinessObject
         public bool IsPublic { get; set; }
 
         public bool IsBuyAvailable { get; set; }
+
+        public float ArtworkRating { get; set; }
 
         public DateTime ArtworkDate { get; set; }
     }

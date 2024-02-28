@@ -55,10 +55,10 @@ namespace ArtHub.DAO
             var artworkToUpdate = await dbContext.Artworks.FirstOrDefaultAsync(a => a.ArtworkID == id);
             if (artworkToUpdate != null)
             {
-                artworkToUpdate.ArtworkName = artwork.ArtworkName;
-                artworkToUpdate.ArtworkDescription = artwork.ArtworkDescription;
-                artworkToUpdate.ArtworkImage = artwork.ArtworkImage;
-                artworkToUpdate.ArtworkPrice = artwork.ArtworkPrice;
+                artworkToUpdate.Name = artwork.Name;
+                artworkToUpdate.Description = artwork.Description;
+                artworkToUpdate.Image = artwork.Image;
+                artworkToUpdate.Price = artwork.Price;
                 artworkToUpdate.IsPublic = artwork.IsPublic;
                 artworkToUpdate.IsBuyAvailable = artwork.IsBuyAvailable;
                 await dbContext.SaveChangesAsync();
