@@ -1,5 +1,6 @@
 ﻿using ArtHub.BusinessObject;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace ArtHub.DAO
 {
@@ -37,10 +38,11 @@ namespace ArtHub.DAO
             return await dbContext.Artworks.ToListAsync();
         }
 
-        public async Task AddArtworkAsync(Artwork artwork)
+        public async Task<Artwork> AddArtworkAsync(Artwork artwork)
         {
             await dbContext.AddAsync(artwork);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
+            return artwork;
         }
 
         public async Task<List<Artwork>> GetArtworksByArtistAsync(int artistID)
@@ -59,7 +61,7 @@ namespace ArtHub.DAO
                 artworkToUpdate.ArtworkPrice = artwork.ArtworkPrice;
                 artworkToUpdate.IsPublic = artwork.IsPublic;
                 artworkToUpdate.IsBuyAvailable = artwork.IsBuyAvailable;
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync();
             }
             return artworkToUpdate!;
         }
@@ -75,8 +77,11 @@ namespace ArtHub.DAO
             if (artwork != null)
             {
                 dbContext.Remove(artwork);
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync();
             }
         }
+
+        public async Task<List<Artwork>> GetArtworks(Expression<Func<Artwork, bool>> expression)
+            => await dbContext.Artworks.Where(expression).ToListAsync();
     }
 }
