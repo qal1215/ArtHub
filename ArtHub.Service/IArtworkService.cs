@@ -1,6 +1,6 @@
 ﻿using ArtHub.BusinessObject;
 
-namespace ArtHub.Service.ArtworkService
+namespace ArtHub.Service
 {
     public interface IArtworkService
     {

@@ -13,6 +13,8 @@ namespace SilverShopRepository
         public Task<bool> IsExistedEmail(string email);
 
         public Task<Member?> LoginAsync(string email, string password);
+
+        public Task<Member?> GetBranchAccountByIdAsync(int memberId);
     }
 }
 

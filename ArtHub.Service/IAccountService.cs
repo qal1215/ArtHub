@@ -11,5 +11,7 @@ namespace ArtHub.Service
         public Task<Member?> LoginAsync(string email, string password);
 
         public Task<bool> IsExistedAccount(string email);
+
+        public Task<Member?> GetAccountById(int accountId);
     }
 }

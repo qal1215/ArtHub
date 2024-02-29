@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtHub.BusinessObject.Migrations
 {
     [DbContext(typeof(ArtHub2024DbContext))]
-    [Migration("20240228195511_UpdateArtwork")]
-    partial class UpdateArtwork
+    [Migration("20240229132427_ChangeName2")]
+    partial class ChangeName2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace ArtHub.BusinessObject.Migrations
 
             modelBuilder.Entity("ArtHub.BusinessObject.Artwork", b =>
                 {
-                    b.Property<int>("ArtworkID")
+                    b.Property<int>("ArtworkId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArtworkID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArtworkId"));
 
                     b.Property<int>("ArtistID")
                         .HasColumnType("int");
@@ -63,7 +63,7 @@ namespace ArtHub.BusinessObject.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("ArtworkID");
+                    b.HasKey("ArtworkId");
 
                     b.HasIndex("ArtistID");
 
@@ -179,26 +179,18 @@ namespace ArtHub.BusinessObject.Migrations
 
             modelBuilder.Entity("ArtHub.BusinessObject.OrderDetail", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
-
                     b.Property<int>("ArtworkId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrderId1")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("OrderId");
-
                     b.HasIndex("ArtworkId");
 
-                    b.HasIndex("OrderId1");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -329,7 +321,7 @@ namespace ArtHub.BusinessObject.Migrations
 
                     b.HasOne("ArtHub.BusinessObject.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId1")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

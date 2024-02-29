@@ -1,6 +1,6 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.ArtworkDTO;
-using ArtHub.Service.ArtworkService;
+using ArtHub.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -38,7 +38,7 @@ namespace ArtHubAPI.Controllers
         {
             var artwork = _mapper.Map<Artwork>((object)creating);
             var newArtwork = await _artworkService.CreateArtwork(artwork);
-            return CreatedAtAction(nameof(GetArtworkById), new { artworkId = newArtwork.ArtworkID }, newArtwork);
+            return CreatedAtAction(nameof(GetArtworkById), new { artworkId = newArtwork.ArtworkId }, newArtwork);
         }
 
         [HttpGet("artist/{artistId}")]

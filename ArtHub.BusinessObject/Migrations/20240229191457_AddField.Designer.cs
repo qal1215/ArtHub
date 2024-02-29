@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtHub.BusinessObject.Migrations
 {
     [DbContext(typeof(ArtHub2024DbContext))]
-    [Migration("20240226205537_InitDatabase")]
-    partial class InitDatabase
+    [Migration("20240229191457_AddField")]
+    partial class AddField
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace ArtHub.BusinessObject.Migrations
 
             modelBuilder.Entity("ArtHub.BusinessObject.Artwork", b =>
                 {
-                    b.Property<int>("ArtworkID")
+                    b.Property<int>("ArtworkId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArtworkID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArtworkId"));
 
                     b.Property<int>("ArtistID")
                         .HasColumnType("int");
@@ -39,20 +39,16 @@ namespace ArtHub.BusinessObject.Migrations
                     b.Property<DateTime>("ArtworkDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ArtworkDescription")
+                    b.Property<float>("ArtworkRating")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ArtworkImage")
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ArtworkName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("ArtworkPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsBuyAvailable")
                         .HasColumnType("bit");
@@ -60,7 +56,14 @@ namespace ArtHub.BusinessObject.Migrations
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
 
-                    b.HasKey("ArtworkID");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("ArtworkId");
 
                     b.HasIndex("ArtistID");
 
@@ -125,6 +128,9 @@ namespace ArtHub.BusinessObject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"));
 
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)");
 
@@ -176,26 +182,18 @@ namespace ArtHub.BusinessObject.Migrations
 
             modelBuilder.Entity("ArtHub.BusinessObject.OrderDetail", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
-
                     b.Property<int>("ArtworkId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrderId1")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("OrderId");
-
                     b.HasIndex("ArtworkId");
 
-                    b.HasIndex("OrderId1");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -259,7 +257,7 @@ namespace ArtHub.BusinessObject.Migrations
             modelBuilder.Entity("ArtHub.BusinessObject.Artwork", b =>
                 {
                     b.HasOne("ArtHub.BusinessObject.Member", "Artist")
-                        .WithMany()
+                        .WithMany("Artworks")
                         .HasForeignKey("ArtistID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -326,7 +324,7 @@ namespace ArtHub.BusinessObject.Migrations
 
                     b.HasOne("ArtHub.BusinessObject.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId1")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -363,6 +361,11 @@ namespace ArtHub.BusinessObject.Migrations
                     b.Navigation("Artwork");
 
                     b.Navigation("Member");
+                });
+
+            modelBuilder.Entity("ArtHub.BusinessObject.Member", b =>
+                {
+                    b.Navigation("Artworks");
                 });
 #pragma warning restore 612, 618
         }

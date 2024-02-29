@@ -2,9 +2,12 @@
 {
     public class ViewAccountDTO
     {
-        public int? AccountId { get; set; }
-        public string EmailAddress { get; set; } = null!;
-        public string AccountPassword { get; set; } = null!;
-        public string? FullName { get; set; }
+        public int AccountId { get; set; }
+
+        public string FullName { get; set; } = null!;
+
+        public string? EmailAddress { get; set; }
+
+        public string? Avatar { get; set; }
     }
 }

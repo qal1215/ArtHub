@@ -69,5 +69,8 @@ namespace ArtHub.Service
             var isExistedEmail = await _accountRepository.IsExistedEmail(email);
             return isExistedEmail;
         }
+
+        public async Task<Member?> GetAccountById(int accountId) => await _accountRepository.GetBranchAccountByIdAsync(accountId);
+
     }
 }

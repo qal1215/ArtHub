@@ -1,6 +1,5 @@
 ﻿using ArtHub.DAO.Mapper;
 using ArtHub.Service;
-using ArtHub.Service.ArtworkService;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OData;

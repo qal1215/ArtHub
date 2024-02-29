@@ -5,7 +5,7 @@ namespace ArtHub.BusinessObject
     public class Artwork
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ArtworkID { get; set; }
+        public int ArtworkId { get; set; }
 
         public string Name { get; set; } = null!;
 

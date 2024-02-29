@@ -1,7 +1,7 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.Repository;
 
-namespace ArtHub.Service.ArtworkService
+namespace ArtHub.Service
 {
     public class ArtworkService : IArtworkService
     {
@@ -44,9 +44,14 @@ namespace ArtHub.Service.ArtworkService
             return await _artworkRepository.GetArtworkPredicate(a => a.Name.Contains(title));
         }
 
+        public async Task<IEnumerable<Artwork>> GetArtworksByPulish()
+        {
+            return await _artworkRepository.GetArtworkPredicate(a => a.IsPublic == true);
+        }
+
         public async Task<Artwork?> UpdateArtwork(Artwork artwork)
         {
-            var isExist = await _artworkRepository.IsExistArtwork(artwork.ArtworkID);
+            var isExist = await _artworkRepository.IsExistArtwork(artwork.ArtworkId);
             if (!isExist)
             {
                 return null;

@@ -30,7 +30,7 @@ namespace ArtHub.DAO
 
         public async Task<Artwork?> GetArtwork(int id)
         {
-            return await dbContext.Artworks.FirstOrDefaultAsync(a => a.ArtworkID == id);
+            return await dbContext.Artworks.FirstOrDefaultAsync(a => a.ArtworkId == id);
         }
 
         public async Task<List<Artwork>> GetArtworksAsync()
@@ -52,7 +52,7 @@ namespace ArtHub.DAO
 
         public async Task<Artwork> UpdateArtWorkAsync(int id, Artwork artwork)
         {
-            var artworkToUpdate = await dbContext.Artworks.FirstOrDefaultAsync(a => a.ArtworkID == id);
+            var artworkToUpdate = await dbContext.Artworks.FirstOrDefaultAsync(a => a.ArtworkId == id);
             if (artworkToUpdate != null)
             {
                 artworkToUpdate.Name = artwork.Name;
@@ -63,17 +63,18 @@ namespace ArtHub.DAO
                 artworkToUpdate.IsBuyAvailable = artwork.IsBuyAvailable;
                 await dbContext.SaveChangesAsync();
             }
+
             return artworkToUpdate!;
         }
 
         public async Task<bool> IsExistArtwork(int id)
         {
-            return await dbContext.Artworks.AnyAsync(a => a.ArtworkID == id);
+            return await dbContext.Artworks.AnyAsync(a => a.ArtworkId == id);
         }
 
         public async Task DeleteArtworkAsync(int id)
         {
-            var artwork = await dbContext.Artworks.FirstOrDefaultAsync(a => a.ArtworkID == id);
+            var artwork = await dbContext.Artworks.FirstOrDefaultAsync(a => a.ArtworkId == id);
             if (artwork != null)
             {
                 dbContext.Remove(artwork);

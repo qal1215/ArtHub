@@ -14,6 +14,8 @@ namespace SilverShopRepository
         public async Task<Member?> LoginAsync(string email, string password) => await AccountDAO.Instance.GetBranchAccountAsync(email, password);
 
         public async Task<bool> IsExistedEmail(string email) => await AccountDAO.Instance.IsExistedEmail(email);
+
+        public async Task<Member?> GetBranchAccountByIdAsync(int memberId) => await AccountDAO.Instance.GetBranchAccountByIdAsync(memberId);
     }
 }
 

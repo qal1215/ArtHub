@@ -4,6 +4,7 @@ using ArtHub.BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtHub.BusinessObject.Migrations
 {
     [DbContext(typeof(ArtHub2024DbContext))]
-    partial class ArtHub2024DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240229132257_ChangeName")]
+    partial class ChangeName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,9 +128,6 @@ namespace ArtHub.BusinessObject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"));
 
-                    b.Property<string>("Avatar")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)");
 
@@ -179,7 +179,13 @@ namespace ArtHub.BusinessObject.Migrations
 
             modelBuilder.Entity("ArtHub.BusinessObject.OrderDetail", b =>
                 {
+                    b.Property<int>("Art")
+                        .HasColumnType("int");
+
                     b.Property<int>("ArtworkId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<int>("OrderId")
@@ -254,7 +260,7 @@ namespace ArtHub.BusinessObject.Migrations
             modelBuilder.Entity("ArtHub.BusinessObject.Artwork", b =>
                 {
                     b.HasOne("ArtHub.BusinessObject.Member", "Artist")
-                        .WithMany("Artworks")
+                        .WithMany()
                         .HasForeignKey("ArtistID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -358,11 +364,6 @@ namespace ArtHub.BusinessObject.Migrations
                     b.Navigation("Artwork");
 
                     b.Navigation("Member");
-                });
-
-            modelBuilder.Entity("ArtHub.BusinessObject.Member", b =>
-                {
-                    b.Navigation("Artworks");
                 });
 #pragma warning restore 612, 618
         }

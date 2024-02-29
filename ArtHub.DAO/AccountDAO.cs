@@ -43,6 +43,11 @@ namespace SilverShopDAO
             return await dbContext.Members.FirstOrDefaultAsync(m => m.EmailAddress!.Equals(email));
         }
 
+        public async Task<Member?> GetBranchAccountByIdAsync(int accountId)
+        {
+            return await dbContext.Members.FirstOrDefaultAsync(m => m.AccountId == accountId);
+        }
+
         public async Task<bool> IsExistedEmail(string mail)
         {
             return await dbContext.Members.AnyAsync(a => a.EmailAddress!.Equals(mail));

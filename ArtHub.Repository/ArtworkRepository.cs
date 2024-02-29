@@ -42,13 +42,13 @@ namespace ArtHub.Repository
 
         public async Task<Artwork?> UpdateArtwork(Artwork artwork)
         {
-            var isExist = await ArtworkDAO.Instance.IsExistArtwork(artwork.ArtworkID);
+            var isExist = await ArtworkDAO.Instance.IsExistArtwork(artwork.ArtworkId);
             if (!isExist)
             {
                 return null;
             }
 
-            var updateTo = await ArtworkDAO.Instance.UpdateArtWorkAsync(artwork.ArtworkID, artwork);
+            var updateTo = await ArtworkDAO.Instance.UpdateArtWorkAsync(artwork.ArtworkId, artwork);
 
             return updateTo;
         }
