@@ -6,11 +6,22 @@ using Microsoft.AspNetCore.OData;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "Default",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 builder.Services.AddControllers().AddOData(options => options.Select().Filter().OrderBy().Count().SetMaxTop(100).Expand().Filter());
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IArtworkService, ArtworkService>();
@@ -70,6 +81,7 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 var app = builder.Build();
+app.UseCors("Default");
 
 app.UseSwagger();
 app.UseSwaggerUI();
