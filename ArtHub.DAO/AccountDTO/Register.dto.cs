@@ -1,4 +1,4 @@
-﻿namespace ArtHub.DAO.Account
+﻿namespace ArtHub.DAO.AccountDTO
 {
     public class Register
     {

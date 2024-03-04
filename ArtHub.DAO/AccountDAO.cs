@@ -43,15 +43,31 @@ namespace SilverShopDAO
             return await dbContext.Members.FirstOrDefaultAsync(m => m.EmailAddress!.Equals(email));
         }
 
-        public async Task<bool> IsExistedEmail(string mail)
+        public async Task<Member?> GetBranchAccountByIdAsync(int accountId)
+        {
+            return await dbContext.Members.FirstOrDefaultAsync(m => m.AccountId == accountId);
+        }
+
+        public async Task<bool> IsExistedAccount(string mail)
         {
             return await dbContext.Members.AnyAsync(a => a.EmailAddress!.Equals(mail));
+        }
+
+        public async Task<bool> IsExistedAccount(int accountId)
+        {
+            return await dbContext.Members.AnyAsync(a => a.AccountId == accountId);
         }
 
         public async Task<Member?> GetBranchAccountAsync(string email, string password)
         {
             return await dbContext.Members
                 .FirstOrDefaultAsync(m => m.EmailAddress!.Equals(email) && m.Password!.Equals(password));
+        }
+
+        public async Task SaveChangeAsync()
+        {
+            await dbContext.SaveChangesAsync();
+            return;
         }
     }
 }

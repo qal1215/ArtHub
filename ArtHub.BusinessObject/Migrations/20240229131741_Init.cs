@@ -5,7 +5,7 @@
 namespace ArtHub.BusinessObject.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDatabase : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,20 +30,21 @@ namespace ArtHub.BusinessObject.Migrations
                 name: "Artworks",
                 columns: table => new
                 {
-                    ArtworkID = table.Column<int>(type: "int", nullable: false)
+                    ArtworkId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ArtworkName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ArtworkDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ArtworkImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ArtworkPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ArtistID = table.Column<int>(type: "int", nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     IsBuyAvailable = table.Column<bool>(type: "bit", nullable: false),
+                    ArtworkRating = table.Column<float>(type: "real", nullable: false),
                     ArtworkDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Artworks", x => x.ArtworkID);
+                    table.PrimaryKey("PK_Artworks", x => x.ArtworkId);
                     table.ForeignKey(
                         name: "FK_Artworks_Members_ArtistID",
                         column: x => x.ArtistID,
@@ -140,7 +141,7 @@ namespace ArtHub.BusinessObject.Migrations
                         name: "FK_Ratings_Artworks_ArtworkId",
                         column: x => x.ArtworkId,
                         principalTable: "Artworks",
-                        principalColumn: "ArtworkID",
+                        principalColumn: "ArtworkId",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Ratings_Members_MemberId",
@@ -154,24 +155,21 @@ namespace ArtHub.BusinessObject.Migrations
                 name: "OrderDetails",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId1 = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
                     ArtworkId = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetails", x => x.OrderId);
                     table.ForeignKey(
                         name: "FK_OrderDetails_Artworks_ArtworkId",
                         column: x => x.ArtworkId,
                         principalTable: "Artworks",
-                        principalColumn: "ArtworkID",
+                        principalColumn: "ArtworkId",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Orders_OrderId1",
-                        column: x => x.OrderId1,
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
@@ -235,9 +233,9 @@ namespace ArtHub.BusinessObject.Migrations
                 column: "ArtworkId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_OrderId1",
+                name: "IX_OrderDetails_OrderId",
                 table: "OrderDetails",
-                column: "OrderId1");
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_BuyerAccountId",

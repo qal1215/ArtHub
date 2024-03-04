@@ -1,5 +1,5 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.Account;
+using ArtHub.DAO.AccountDTO;
 using ArtHub.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -62,7 +62,7 @@ namespace ArtHubAPI.Controllers
 
                 if (userAdded)
                 {
-                    var tokenString = GenerateJSONWebToken(account.EmailAddress!);
+                    var tokenString = GenerateJSONWebToken(account);
                     response = Ok(new { token = tokenString });
                 }
             }
@@ -91,14 +91,14 @@ namespace ArtHubAPI.Controllers
 
             if (user != null)
             {
-                var tokenString = GenerateJSONWebToken(user.EmailAddress!);
+                var tokenString = GenerateJSONWebToken(user);
                 response = Ok(new { token = tokenString });
             }
 
             return response;
         }
 
-        private string GenerateJSONWebToken(string emailAddress)
+        private string GenerateJSONWebToken(Member member)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -107,7 +107,10 @@ namespace ArtHubAPI.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Email, emailAddress)
+                    new Claim(JwtRegisteredClaimNames.Email, member.EmailAddress!),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()!),
+                    new Claim("MemberId", member.AccountId.ToString()),
+                    new Claim("Role", member.Role.ToString()!)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = credentials,

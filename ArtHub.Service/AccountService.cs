@@ -1,14 +1,18 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.DAO.AccountDTO;
+using AutoMapper;
 using SilverShopRepository;
 
 namespace ArtHub.Service
 {
     public class AccountService : IAccountService
     {
+        private readonly IMapper _mapper;
         private readonly IAccountRepository _accountRepository = null;
 
-        public AccountService()
+        public AccountService(IMapper mapper)
         {
+            _mapper = mapper;
             _accountRepository = new AccountRepository();
         }
 
@@ -17,7 +21,7 @@ namespace ArtHub.Service
         {
             try
             {
-                var isExistedEmail = await _accountRepository.IsExistedEmail(branchAccount.EmailAddress!);
+                var isExistedEmail = await _accountRepository.IsExistedAccount(branchAccount.EmailAddress!);
 
                 if (isExistedEmail)
                 {
@@ -64,10 +68,19 @@ namespace ArtHub.Service
             }
         }
 
-        public async Task<bool> IsExistedAccount(string email)
+        public async Task<bool> IsExistedAccount(string email) => await _accountRepository.IsExistedAccount(email);
+
+
+
+        public async Task<Member?> GetAccountById(int accountId) => await _accountRepository.GetBranchAccountByIdAsync(accountId);
+
+        public async Task<Member?> UpdateAccount(int accountId, UpdateAccount account)
         {
-            var isExistedEmail = await _accountRepository.IsExistedEmail(email);
-            return isExistedEmail;
+            var member = _mapper.Map<Member>(account);
+            var updatedMember = await _accountRepository.UpdateAccountAsync(accountId, member);
+            return updatedMember;
         }
+
+        public async Task<bool> IsExistedAccount(int accountId) => await _accountRepository.IsExistedAccount(accountId);
     }
 }

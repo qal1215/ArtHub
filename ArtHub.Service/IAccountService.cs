@@ -1,4 +1,5 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.DAO.AccountDTO;
 
 namespace ArtHub.Service
 {
@@ -11,5 +12,11 @@ namespace ArtHub.Service
         public Task<Member?> LoginAsync(string email, string password);
 
         public Task<bool> IsExistedAccount(string email);
+
+        public Task<bool> IsExistedAccount(int accountId);
+
+        public Task<Member?> GetAccountById(int accountId);
+
+        public Task<Member?> UpdateAccount(int accountId, UpdateAccount account);
     }
 }

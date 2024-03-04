@@ -15,5 +15,9 @@ public partial class Member
 
     public string? EmailAddress { get; set; }
 
+    public string? Avatar { get; set; }
+
     public int? Role { get; set; }
+
+    public virtual ICollection<Artwork> Artworks { get; set; } = new HashSet<Artwork>();
 }

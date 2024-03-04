@@ -1,5 +1,6 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.Account;
+using ArtHub.DAO.AccountDTO;
+using ArtHub.DAO.ArtworkDTO;
 using AutoMapper;
 
 namespace ArtHub.DAO.Mapper
@@ -8,9 +9,12 @@ namespace ArtHub.DAO.Mapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<LoginDTO, AccountDTO>();
-            CreateMap<AccountDTO, LoginDTO>();
+            CreateMap<LoginDTO, ViewAccountDTO>();
+            CreateMap<ViewAccountDTO, LoginDTO>();
             CreateMap<Register, Member>();
+            CreateMap<UpdateAccount, Member>();
+
+            CreateMap<CreateArtwork, Artwork>();
         }
     }
 }
