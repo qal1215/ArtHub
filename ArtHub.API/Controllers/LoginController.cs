@@ -1,13 +1,10 @@
-﻿using ArtHub.BusinessObject;
+﻿using ArtHub.API.Helpers;
+using ArtHub.BusinessObject;
 using ArtHub.DAO.AccountDTO;
 using ArtHub.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace ArtHubAPI.Controllers
 {
@@ -21,11 +18,14 @@ namespace ArtHubAPI.Controllers
 
         private readonly IMapper _mapper;
 
+        private readonly JwtTokenHelper _jwtTokenHelper;
+
         public LoginController(IMapper mapper, IConfiguration config, IAccountService accountService)
         {
             _config = config;
             _accountService = accountService;
             _mapper = mapper;
+            _jwtTokenHelper = new JwtTokenHelper(config);
         }
 
         [AllowAnonymous]
@@ -62,7 +62,7 @@ namespace ArtHubAPI.Controllers
 
                 if (userAdded)
                 {
-                    var tokenString = GenerateJSONWebToken(account);
+                    var tokenString = _jwtTokenHelper.GenerateJSONWebToken(account);
                     response = Ok(new { token = tokenString });
                 }
             }
@@ -91,38 +91,14 @@ namespace ArtHubAPI.Controllers
 
             if (user != null)
             {
-                var tokenString = GenerateJSONWebToken(user);
+                var tokenString = _jwtTokenHelper.GenerateJSONWebToken(user);
                 response = Ok(new { token = tokenString });
             }
 
             return response;
         }
 
-        private string GenerateJSONWebToken(Member member)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(JwtRegisteredClaimNames.Email, member.EmailAddress!),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()!),
-                    new Claim("MemberId", member.AccountId.ToString()),
-                    new Claim("Role", member.Role.ToString()!)
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = credentials,
-                Issuer = _config["Jwt:Issuer"],
-                Audience = _config["Jwt:Issuer"]
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
-        }
     }
 }
 
