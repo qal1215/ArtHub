@@ -12,6 +12,7 @@ namespace ArtHub.DAO.Mapper
             CreateMap<LoginDTO, ViewAccountDTO>();
             CreateMap<ViewAccountDTO, LoginDTO>();
             CreateMap<Register, Member>();
+            CreateMap<UpdateAccount, Member>();
 
             CreateMap<CreateArtwork, Artwork>();
         }

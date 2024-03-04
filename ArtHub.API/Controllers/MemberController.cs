@@ -1,4 +1,6 @@
-﻿using ArtHub.Service;
+﻿using ArtHub.DAO.AccountDTO;
+using ArtHub.Service;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArtHub.API.Controllers
@@ -7,11 +9,13 @@ namespace ArtHub.API.Controllers
     [Route("profile")]
     public class MemberController : ControllerBase
     {
+        private IMapper _mapper;
         private IAccountService _accountService;
         private IArtworkService _artworkService;
 
-        public MemberController(IAccountService accountService, IArtworkService artworkService)
+        public MemberController(IMapper mapper, IAccountService accountService, IArtworkService artworkService)
         {
+            _mapper = mapper;
             _accountService = accountService;
             _artworkService = artworkService;
         }
@@ -28,6 +32,30 @@ namespace ArtHub.API.Controllers
 
             member.Artworks = memberArtworks.ToArray();
             return Ok(member);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateMemberProfileAsync(int id, [FromBody] UpdateAccount account)
+        {
+            if (id != account.Id)
+            {
+                return BadRequest();
+            }
+
+            var isExisted = await _accountService.IsExistedAccount(account.EmailAddress!);
+
+            if (!isExisted)
+            {
+                return Unauthorized();
+            }
+
+            var updatedAccount = await _accountService.UpdateAccount(id, account);
+            if (updatedAccount is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(updatedAccount);
         }
     }
 }
