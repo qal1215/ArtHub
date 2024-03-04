@@ -1,4 +1,5 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.DAO.ModelResult;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -84,5 +85,29 @@ namespace ArtHub.DAO
 
         public async Task<List<Artwork>> GetArtworks(Expression<Func<Artwork, bool>> expression)
             => await dbContext.Artworks.Where(expression).ToListAsync();
+
+        public async Task<PagedResult<Artwork>> GetArtworksPaging(int page, int pageSize, string q)
+        {
+            var artworks = await dbContext.Artworks
+                .Where(artwork => artwork.Description.Contains(q) || artwork.Name.Contains(q))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var totalItem = await dbContext.Artworks
+                .Where(artwork => artwork.Description.Contains(q) || artwork.Name.Contains(q))
+                .CountAsync();
+            decimal totalPages = (decimal)totalItem / pageSize;
+
+            return new PagedResult<Artwork>
+            {
+                Page = page,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Round(totalPages),
+                TotalItems = totalItem,
+                Items = artworks
+            };
+        }
+
     }
 }

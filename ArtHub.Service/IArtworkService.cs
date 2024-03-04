@@ -1,4 +1,5 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.DAO.ModelResult;
 
 namespace ArtHub.Service
 {
@@ -15,5 +16,7 @@ namespace ArtHub.Service
         public Task<Artwork> CreateArtwork(Artwork artwork);
 
         public Task<bool> DeleteArtwork(int id);
+
+        public Task<PagedResult<Artwork>> GetArtworksPaging(QueryPaging queryPaging);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.DAO.ModelResult;
 using System.Linq.Expressions;
 
 namespace ArtHub.Repository
@@ -18,5 +19,7 @@ namespace ArtHub.Repository
         public Task<bool> IsExistArtwork(int id);
 
         public Task<IEnumerable<Artwork>> GetArtworkPredicate(Expression<Func<Artwork, bool>> predicate);
+
+        public Task<PagedResult<Artwork>> GetArtworksPaging(int page, int pageSize, string? q);
     }
 }

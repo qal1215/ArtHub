@@ -1,5 +1,6 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO;
+using ArtHub.DAO.ModelResult;
 using System.Linq.Expressions;
 
 namespace ArtHub.Repository
@@ -51,6 +52,11 @@ namespace ArtHub.Repository
             var updateTo = await ArtworkDAO.Instance.UpdateArtWorkAsync(artwork.ArtworkId, artwork);
 
             return updateTo;
+        }
+
+        public async Task<PagedResult<Artwork>> GetArtworksPaging(int page, int pageSize, string? q)
+        {
+            return await ArtworkDAO.Instance.GetArtworksPaging(page, pageSize, q);
         }
     }
 }

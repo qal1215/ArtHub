@@ -1,5 +1,6 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.ArtworkDTO;
+using ArtHub.DAO.ModelResult;
 using ArtHub.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +51,15 @@ namespace ArtHubAPI.Controllers
 
             return Ok(listArtwork);
         }
+
+        [HttpGet("")]
+        public async Task<IActionResult> GetAllArtwork([FromQuery] QueryPaging queryPaging)
+        {
+            var artworkPaged = await _artworkService.GetArtworksPaging(queryPaging);
+            return Ok(artworkPaged);
+        }
     }
+
+
 }
 
