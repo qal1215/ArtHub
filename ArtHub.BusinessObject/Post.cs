@@ -18,5 +18,7 @@ namespace ArtHub.BusinessObject
         public int MemberId { get; set; }
 
         public Member Member { get; set; } = null!;
+
+        public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
