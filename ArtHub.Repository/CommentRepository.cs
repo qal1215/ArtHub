@@ -1,5 +1,6 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO;
+using ArtHub.Repository.Contracts;
 
 namespace ArtHub.Repository
 {

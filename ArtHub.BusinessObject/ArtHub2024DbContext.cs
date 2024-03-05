@@ -21,6 +21,10 @@ public partial class ArtHub2024DbContext : DbContext
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
+    public virtual DbSet<Genre> Genres { get; set; }
+
+    public virtual DbSet<HistoryTransaction> HistoryTransaction { get; set; }
+
     public ArtHub2024DbContext()
     {
     }

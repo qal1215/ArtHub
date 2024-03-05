@@ -4,6 +4,7 @@ using ArtHub.BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtHub.BusinessObject.Migrations
 {
     [DbContext(typeof(ArtHub2024DbContext))]
-    partial class ArtHub2024DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240305200303_AddGenre1")]
+    partial class AddGenre1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,45 +142,6 @@ namespace ArtHub.BusinessObject.Migrations
                     b.ToTable("Genres");
                 });
 
-            modelBuilder.Entity("ArtHub.BusinessObject.HistoryTransaction", b =>
-                {
-                    b.Property<int>("HistoryTransactionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HistoryTransactionId"));
-
-                    b.Property<decimal>("AfterTransactionBalance")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ArtId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("BeforeTransactionBalance")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("MemberAccountId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TransactionAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("HistoryTransactionId");
-
-                    b.HasIndex("MemberAccountId");
-
-                    b.ToTable("HistoryTransaction");
-                });
-
             modelBuilder.Entity("ArtHub.BusinessObject.Member", b =>
                 {
                     b.Property<int>("AccountId")
@@ -188,9 +152,6 @@ namespace ArtHub.BusinessObject.Migrations
 
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)");
@@ -267,9 +228,6 @@ namespace ArtHub.BusinessObject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostId"));
 
-                    b.Property<int?>("ArtworkId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -286,8 +244,6 @@ namespace ArtHub.BusinessObject.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PostId");
-
-                    b.HasIndex("ArtworkId");
 
                     b.HasIndex("MemberId");
 
@@ -377,13 +333,6 @@ namespace ArtHub.BusinessObject.Migrations
                     b.Navigation("Follower");
                 });
 
-            modelBuilder.Entity("ArtHub.BusinessObject.HistoryTransaction", b =>
-                {
-                    b.HasOne("ArtHub.BusinessObject.Member", null)
-                        .WithMany("HistoryTransactions")
-                        .HasForeignKey("MemberAccountId");
-                });
-
             modelBuilder.Entity("ArtHub.BusinessObject.Order", b =>
                 {
                     b.HasOne("ArtHub.BusinessObject.Member", "Buyer")
@@ -416,17 +365,11 @@ namespace ArtHub.BusinessObject.Migrations
 
             modelBuilder.Entity("ArtHub.BusinessObject.Post", b =>
                 {
-                    b.HasOne("ArtHub.BusinessObject.Artwork", "Artwork")
-                        .WithMany()
-                        .HasForeignKey("ArtworkId");
-
                     b.HasOne("ArtHub.BusinessObject.Member", "Member")
                         .WithMany()
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Artwork");
 
                     b.Navigation("Member");
                 });
@@ -458,8 +401,6 @@ namespace ArtHub.BusinessObject.Migrations
             modelBuilder.Entity("ArtHub.BusinessObject.Member", b =>
                 {
                     b.Navigation("Artworks");
-
-                    b.Navigation("HistoryTransactions");
                 });
 
             modelBuilder.Entity("ArtHub.BusinessObject.Post", b =>

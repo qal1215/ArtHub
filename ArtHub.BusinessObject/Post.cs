@@ -19,6 +19,10 @@ namespace ArtHub.BusinessObject
 
         public Member Member { get; set; } = null!;
 
+        public int? ArtworkId { get; set; }
+
+        public Artwork? Artwork { get; set; }
+
         public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using ArtHub.BusinessObject;
 
-namespace SilverShopRepository
+namespace ArtHub.Repository.Contracts
 {
     public interface IAccountRepository
     {

@@ -20,5 +20,7 @@ namespace ArtHub.DAO.ArtworkDTO
         public bool IsPublic { get; set; }
 
         public bool IsBuyAvailable { get; set; }
+
+        public int GenreId { get; set; }
     }
 }

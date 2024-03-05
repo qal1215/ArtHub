@@ -1,6 +1,6 @@
 ﻿using ArtHub.BusinessObject;
 
-namespace ArtHub.Repository
+namespace ArtHub.Repository.Contracts
 {
     public interface IPostRepository
     {

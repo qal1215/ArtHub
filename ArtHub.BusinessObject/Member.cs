@@ -17,7 +17,17 @@ public partial class Member
 
     public string? Avatar { get; set; }
 
-    public int? Role { get; set; }
+    public Role? Role { get; set; }
+
+    public virtual ICollection<HistoryTransaction> HistoryTransactions { get; set; } = new HashSet<HistoryTransaction>();
+
+    public decimal Balance { get; set; }
 
     public virtual ICollection<Artwork> Artworks { get; set; } = new HashSet<Artwork>();
+}
+
+public enum Role
+{
+    Admin = 1,
+    Member = 2
 }

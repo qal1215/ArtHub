@@ -1,4 +1,5 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.Repository.Contracts;
 using SilverShopDAO;
 
 namespace SilverShopRepository

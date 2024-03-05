@@ -59,7 +59,5 @@ namespace ArtHubAPI.Controllers
             return Ok(artworkPaged);
         }
     }
-
-
 }
 

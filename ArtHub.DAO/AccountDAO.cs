@@ -69,6 +69,18 @@ namespace SilverShopDAO
             await dbContext.SaveChangesAsync();
             return;
         }
+
+        public async Task<bool> UpdateAccountBalance(int accountId, decimal currentBalance)
+        {
+            var account = await dbContext.Members.FirstOrDefaultAsync(a => a.AccountId == accountId);
+            if (account is null || currentBalance < 0)
+            {
+                return false;
+            }
+            account.Balance = currentBalance;
+            await dbContext.SaveChangesAsync();
+            return true;
+        }
     }
 }
 
