@@ -1,8 +1,9 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.AccountDTO;
+using ArtHub.Repository;
 using ArtHub.Repository.Contracts;
+using ArtHub.Service.Contracts;
 using AutoMapper;
-using SilverShopRepository;
 
 namespace ArtHub.Service
 {

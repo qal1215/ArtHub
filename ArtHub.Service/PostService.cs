@@ -2,6 +2,7 @@
 using ArtHub.DAO.PostCommentDTO;
 using ArtHub.Repository;
 using ArtHub.Repository.Contracts;
+using ArtHub.Service.Contracts;
 using AutoMapper;
 
 namespace ArtHub.Service

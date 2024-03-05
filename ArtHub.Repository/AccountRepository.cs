@@ -2,7 +2,7 @@
 using ArtHub.Repository.Contracts;
 using SilverShopDAO;
 
-namespace SilverShopRepository
+namespace ArtHub.Repository
 {
     public class AccountRepository : IAccountRepository
     {

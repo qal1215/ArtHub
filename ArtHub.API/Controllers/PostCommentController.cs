@@ -1,5 +1,5 @@
 ﻿using ArtHub.DAO.PostCommentDTO;
-using ArtHub.Service;
+using ArtHub.Service.Contracts;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
