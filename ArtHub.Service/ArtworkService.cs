@@ -31,7 +31,7 @@ namespace ArtHub.Service
             Artwork artwork = _mapper.Map<Artwork>(creating);
             artwork.ArtworkDate = DateTime.Now;
             artwork.ArtworkRating = 0;
-            artwork.Genre = genre;
+            artwork.GenreId = genre.GenreId;
             return await _artworkRepository.CreateArtwork(artwork);
         }
 

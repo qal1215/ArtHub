@@ -13,14 +13,14 @@ namespace ArtHub.API.Controllers
             return Ok("Balance");
         }
 
-        [HttpGet("history")]
+        [HttpPost("history")]
         public IActionResult GetHistoryAmount([FromBody] GetBanlance getBanlance)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             if (getBanlance.UserId <= 0)
-                return BadRequest("Invalid input");
+                return BadRequest(new { msg = "Invalid input" });
 
 
             return Ok("History");
