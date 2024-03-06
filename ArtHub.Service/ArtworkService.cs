@@ -1,24 +1,37 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.DAO.ArtworkDTO;
 using ArtHub.DAO.ModelResult;
 using ArtHub.Repository;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
+using AutoMapper;
 
 namespace ArtHub.Service
 {
     public class ArtworkService : IArtworkService
     {
         private readonly IArtworkRepository _artworkRepository;
+        private readonly IGenreRepository _genreRepository;
+        private readonly IMapper _mapper;
 
-        public ArtworkService()
+        public ArtworkService(IMapper mapper)
         {
             _artworkRepository = new ArtworkRepository();
+            _genreRepository = new GenreRepository();
+            _mapper = mapper;
         }
 
-        public async Task<Artwork> CreateArtwork(Artwork artwork)
+        public async Task<Artwork> CreateArtwork(CreateArtwork creating)
         {
+            var genre = await _genreRepository.SearchGenreByName(creating.GenreName);
+            if (genre is null)
+            {
+                genre = await _genreRepository.AddGenre(creating.GenreName);
+            }
+            Artwork artwork = _mapper.Map<Artwork>(creating);
             artwork.ArtworkDate = DateTime.Now;
             artwork.ArtworkRating = 0;
+            artwork.Genre = genre;
             return await _artworkRepository.CreateArtwork(artwork);
         }
 
