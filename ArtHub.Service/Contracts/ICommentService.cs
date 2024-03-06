@@ -1,7 +1,7 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.PostCommentDTO;
 
-namespace ArtHub.Service
+namespace ArtHub.Service.Contracts
 {
     public interface ICommentService
     {

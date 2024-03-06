@@ -1,6 +1,8 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.ModelResult;
 using ArtHub.Repository;
+using ArtHub.Repository.Contracts;
+using ArtHub.Service.Contracts;
 
 namespace ArtHub.Service
 {

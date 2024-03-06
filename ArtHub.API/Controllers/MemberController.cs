@@ -1,5 +1,5 @@
 ﻿using ArtHub.DAO.AccountDTO;
-using ArtHub.Service;
+using ArtHub.Service.Contracts;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 

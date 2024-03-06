@@ -1,7 +1,9 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.AccountDTO;
+using ArtHub.Repository;
+using ArtHub.Repository.Contracts;
+using ArtHub.Service.Contracts;
 using AutoMapper;
-using SilverShopRepository;
 
 namespace ArtHub.Service
 {
@@ -37,7 +39,7 @@ namespace ArtHub.Service
             }
         }
 
-        public async Task<Member?> LoginAsync(string email, string password)
+        public async Task<ViewAccount?> LoginAsync(string email, string password)
         {
             try
             {
@@ -46,8 +48,8 @@ namespace ArtHub.Service
                 {
                     return null;
                 }
-
-                return account;
+                var viewAccount = _mapper.Map<ViewAccount>(account);
+                return viewAccount;
             }
             catch
             {
@@ -55,12 +57,13 @@ namespace ArtHub.Service
             }
         }
 
-        public async Task<List<Member>?> GetBranchAccountsAsync()
+        public async Task<List<ViewAccount>?> GetBranchAccountsAsync()
         {
             try
             {
                 var accounts = await _accountRepository.GetBranchAccountsAsync();
-                return accounts;
+                var viewAccounts = _mapper.Map<List<ViewAccount>>(accounts);
+                return viewAccounts;
             }
             catch
             {
@@ -72,13 +75,19 @@ namespace ArtHub.Service
 
 
 
-        public async Task<Member?> GetAccountById(int accountId) => await _accountRepository.GetBranchAccountByIdAsync(accountId);
+        public async Task<ViewAccount?> GetAccountById(int accountId)
+        {
+            var account = await _accountRepository.GetBranchAccountByIdAsync(accountId);
+            var viewAccount = _mapper.Map<ViewAccount>(account);
+            return viewAccount;
+        }
 
-        public async Task<Member?> UpdateAccount(int accountId, UpdateAccount account)
+        public async Task<ViewAccount?> UpdateAccount(int accountId, UpdateAccount account)
         {
             var member = _mapper.Map<Member>(account);
             var updatedMember = await _accountRepository.UpdateAccountAsync(accountId, member);
-            return updatedMember;
+            var viewAccount = _mapper.Map<ViewAccount>(updatedMember);
+            return viewAccount;
         }
 
         public async Task<bool> IsExistedAccount(int accountId) => await _accountRepository.IsExistedAccount(accountId);

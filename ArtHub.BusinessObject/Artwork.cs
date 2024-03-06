@@ -26,5 +26,9 @@ namespace ArtHub.BusinessObject
         public float ArtworkRating { get; set; }
 
         public DateTime ArtworkDate { get; set; }
+
+        public int GenreId { get; set; }
+
+        public Genre Genre { get; set; } = null!;
     }
 }

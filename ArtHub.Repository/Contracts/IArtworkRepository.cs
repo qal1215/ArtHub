@@ -2,7 +2,7 @@
 using ArtHub.DAO.ModelResult;
 using System.Linq.Expressions;
 
-namespace ArtHub.Repository
+namespace ArtHub.Repository.Contracts
 {
     public interface IArtworkRepository
     {

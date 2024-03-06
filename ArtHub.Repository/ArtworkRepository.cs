@@ -1,6 +1,7 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO;
 using ArtHub.DAO.ModelResult;
+using ArtHub.Repository.Contracts;
 using System.Linq.Expressions;
 
 namespace ArtHub.Repository

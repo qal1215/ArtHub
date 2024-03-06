@@ -1,7 +1,7 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.ArtworkDTO;
 using ArtHub.DAO.ModelResult;
-using ArtHub.Service;
+using ArtHub.Service.Contracts;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -59,7 +59,5 @@ namespace ArtHubAPI.Controllers
             return Ok(artworkPaged);
         }
     }
-
-
 }
 
