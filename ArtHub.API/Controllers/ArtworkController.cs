@@ -1,5 +1,4 @@
-﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.ArtworkDTO;
+﻿using ArtHub.DAO.ArtworkDTO;
 using ArtHub.DAO.ModelResult;
 using ArtHub.Service.Contracts;
 using AutoMapper;
@@ -37,8 +36,7 @@ namespace ArtHubAPI.Controllers
         //[Authorize]
         public async Task<IActionResult> AddArtwork([FromBody] CreateArtwork creating)
         {
-            var artwork = _mapper.Map<Artwork>((object)creating);
-            var newArtwork = await _artworkService.CreateArtwork(artwork);
+            var newArtwork = await _artworkService.CreateArtwork(creating);
             return CreatedAtAction(nameof(GetArtworkById), new { artworkId = newArtwork.ArtworkId }, newArtwork);
         }
 

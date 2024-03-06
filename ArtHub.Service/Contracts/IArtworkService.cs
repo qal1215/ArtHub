@@ -1,4 +1,5 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.DAO.ArtworkDTO;
 using ArtHub.DAO.ModelResult;
 
 namespace ArtHub.Service.Contracts
@@ -13,7 +14,7 @@ namespace ArtHub.Service.Contracts
 
         public Task<Artwork?> UpdateArtwork(Artwork artwork);
 
-        public Task<Artwork> CreateArtwork(Artwork artwork);
+        public Task<Artwork> CreateArtwork(CreateArtwork artwork);
 
         public Task<bool> DeleteArtwork(int id);
 
