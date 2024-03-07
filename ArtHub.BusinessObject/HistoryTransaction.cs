@@ -6,7 +6,7 @@ public class HistoryTransaction
 
     public int ArtId { get; set; }
 
-    public int UserId { get; set; }
+    public int AccountId { get; set; }
 
     public TransactionType TransactionType { get; set; }
 

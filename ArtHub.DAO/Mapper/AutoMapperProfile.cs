@@ -1,6 +1,7 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.AccountDTO;
 using ArtHub.DAO.ArtworkDTO;
+using ArtHub.DAO.BalanceDTO;
 using ArtHub.DAO.PostCommentDTO;
 using AutoMapper;
 
@@ -20,6 +21,8 @@ namespace ArtHub.DAO.Mapper
 
             CreateMap<CreatePost, Post>();
             CreateMap<CreateComment, Comment>();
+
+            CreateMap<Member, CurrentBalance>();
         }
     }
 }

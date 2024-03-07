@@ -1,4 +1,5 @@
 ﻿using ArtHub.DAO.BalanceDTO;
+using ArtHub.Service.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArtHub.API.Controllers
@@ -7,35 +8,80 @@ namespace ArtHub.API.Controllers
     [ApiController]
     public class BalanceController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetBalance()
+        private readonly IBalanceService _balanceService;
+
+        public BalanceController(IBalanceService balanceService)
         {
-            return Ok("Balance");
+            _balanceService = balanceService;
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetBalance(int userId)
+        {
+            if (userId <= 0)
+                return BadRequest(new { msg = "Invalid input" });
+
+            var balance = await _balanceService.GetBalanceByAccountId(userId);
+            if (balance is null) return NotFound(new { msg = "Invalid user id" });
+
+            return Ok(balance);
         }
 
         [HttpPost("history")]
-        public IActionResult GetHistoryAmount([FromBody] GetBanlance getBanlance)
+        public async Task<IActionResult> GetHistoryAmount([FromBody] GetBanlance getBanlance)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (getBanlance.UserId <= 0)
+            if (getBanlance.AccountId <= 0)
                 return BadRequest(new { msg = "Invalid input" });
 
+            var balanceHistory = await _balanceService.GetHistoryTransactionsByAccountId(getBanlance.AccountId);
 
-            return Ok("History");
+            if (balanceHistory is null)
+            {
+                return NotFound(new { msg = "Invalid user id" });
+            }
+
+            return Ok(balanceHistory);
         }
 
         [HttpPost("deposit")]
-        public IActionResult DepositAmount()
+        public async Task<IActionResult> DepositAmountAsync([FromBody] TransactionAmount depositAmount)
         {
-            return Ok("DepositAmount Balance");
+            if (depositAmount.AccountId <= 0)
+                return BadRequest(new { msg = "Invalid input" });
+
+            if (depositAmount.Amount <= 0)
+                return BadRequest(new { msg = "Invalid input" });
+
+            var balanceHistory = await _balanceService.DepositBalanceAsync(depositAmount);
+
+            if (balanceHistory is null)
+            {
+                return BadRequest(new { msg = "Invalid transaction" });
+            }
+
+            return Ok(balanceHistory);
         }
 
         [HttpPost("withdraw")]
-        public IActionResult WithdrawAmount()
+        public async Task<IActionResult> WithdrawAmountAsync([FromBody] TransactionAmount withdrawAmount)
         {
-            return Ok("WithdrawAmount Balance");
+            if (withdrawAmount.AccountId <= 0)
+                return BadRequest(new { msg = "Invalid input" });
+
+            if (withdrawAmount.Amount <= 0)
+                return BadRequest(new { msg = "Invalid input" });
+
+            var balanceHistory = await _balanceService.WithdrawBalanceAsync(withdrawAmount);
+
+            if (balanceHistory is null)
+            {
+                return BadRequest(new { msg = "Invalid transaction" });
+            }
+
+            return Ok(balanceHistory);
         }
     }
 }

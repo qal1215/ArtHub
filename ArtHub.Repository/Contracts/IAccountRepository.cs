@@ -19,6 +19,10 @@ namespace ArtHub.Repository.Contracts
         public Task<Member?> GetBranchAccountByIdAsync(int memberId);
 
         public Task<Member?> UpdateAccountAsync(int accountId, Member account);
+
+        public Task<decimal> GetBalanceByAccountId(int memberId);
+
+        public Task UpdateBalanceByAccountId(int memberId, decimal updateAmount);
     }
 }
 
