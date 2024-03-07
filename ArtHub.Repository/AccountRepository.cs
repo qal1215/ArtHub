@@ -50,6 +50,16 @@ namespace ArtHub.Repository
             }
             return member;
         }
+
+        public async Task<decimal> GetBalanceByAccountId(int accountId)
+            => await AccountDAO.Instance.GetBranchAccountByIdAsync(accountId) is Member member ? member.Balance : -1;
+
+        public async Task UpdateBalanceByAccountId(int memberId, decimal updateAmount)
+        {
+            var member = await AccountDAO.Instance.GetBranchAccountByIdAsync(memberId);
+            member!.Balance = updateAmount;
+            await AccountDAO.Instance.SaveChangeAsync();
+        }
     }
 }
 

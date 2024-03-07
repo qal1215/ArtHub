@@ -23,6 +23,7 @@ namespace ArtHub.Service
         {
             try
             {
+                branchAccount.EmailAddress = branchAccount.EmailAddress!.ToLower().Trim();
                 var isExistedEmail = await _accountRepository.IsExistedAccount(branchAccount.EmailAddress!);
 
                 if (isExistedEmail)
@@ -30,6 +31,7 @@ namespace ArtHub.Service
                     return false;
                 }
 
+                branchAccount.Role = Role.Member;
                 await _accountRepository.AddBranchAccountAsync(branchAccount);
                 return true;
             }

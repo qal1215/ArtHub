@@ -35,7 +35,7 @@ namespace ArtHub.DAO
             DateTime? todate = null)
         {
             var history = dbContext.HistoryTransaction
-                .Where(h => h.UserId == userId);
+                .Where(h => h.AccountId == userId);
 
             if (type is not null)
             {

@@ -1,10 +1,12 @@
 ﻿using ArtHub.BusinessObject;
+using System.ComponentModel.DataAnnotations;
 
 namespace ArtHub.DAO.BalanceDTO
 {
     public class GetBanlance
     {
-        public int UserId { get; set; }
+        [Required]
+        public int AccountId { get; set; }
 
         public TransactionType TransactionType { get; set; }
 
