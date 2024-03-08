@@ -1,6 +1,5 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.PostCommentDTO;
-using ArtHub.Repository;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
 using AutoMapper;
@@ -12,10 +11,10 @@ namespace ArtHub.Service
         private readonly IMapper _mapper;
         private readonly ICommentRepository _commentRepository;
 
-        public CommentService(IMapper mapper)
+        public CommentService(IMapper mapper, ICommentRepository commentRepository)
         {
             _mapper = mapper;
-            _commentRepository = new CommentRepository();
+            _commentRepository = commentRepository;
         }
 
         public async Task<Comment> AddCommentAsync(CreateComment comment)

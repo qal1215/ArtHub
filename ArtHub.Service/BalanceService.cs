@@ -1,6 +1,5 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.BalanceDTO;
-using ArtHub.Repository;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
 using AutoMapper;
@@ -10,14 +9,14 @@ namespace ArtHub.Service
     public class BalanceService : IBalanceService
     {
         private readonly IMapper _mapper;
-        private readonly IAccountRepository _accountRepository = null;
-        private readonly ITransactionHistoryRepository _transactionHistoryRepository = null;
+        private readonly IAccountRepository _accountRepository;
+        private readonly ITransactionHistoryRepository _transactionHistoryRepository;
 
-        public BalanceService(IMapper mapper)
+        public BalanceService(IMapper mapper, IAccountRepository accountRepository, ITransactionHistoryRepository transactionHistoryRepository)
         {
             _mapper = mapper;
-            _accountRepository = new AccountRepository();
-            _transactionHistoryRepository = new TransactionHistoryRepository();
+            _accountRepository = accountRepository;
+            _transactionHistoryRepository = transactionHistoryRepository;
         }
 
         public async Task<List<HistoryTransaction>?> GetHistoryTransactionsByAccountId(int accountId)

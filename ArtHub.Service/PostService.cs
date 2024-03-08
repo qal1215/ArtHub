@@ -1,6 +1,5 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.PostCommentDTO;
-using ArtHub.Repository;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
 using AutoMapper;
@@ -11,11 +10,13 @@ namespace ArtHub.Service
     {
         private readonly IMapper _mapper;
         private readonly IPostRepository _postRepository;
+        private readonly ICommentRepository _commentRepository;
 
-        public PostService(IMapper mapper)
+        public PostService(IMapper mapper, IPostRepository postRepository, ICommentRepository commentRepository)
         {
             _mapper = mapper;
-            _postRepository = new PostRepository();
+            _postRepository = postRepository;
+            _commentRepository = commentRepository;
         }
         public async Task<Post> AddPostAsync(CreatePost post)
         {
@@ -30,7 +31,12 @@ namespace ArtHub.Service
 
         public async Task<Post?> GetPostAsync(int postId)
         {
-            return await _postRepository.GetPost(postId);
+            var post = await _postRepository.GetPost(postId);
+
+            if (post is null) return null;
+
+            post.Comments = await _commentRepository.GetCommentsByPostId(postId);
+            return post;
         }
 
         public Task<List<Post>?> GetPostsAsync()

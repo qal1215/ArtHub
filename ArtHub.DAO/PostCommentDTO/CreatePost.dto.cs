@@ -6,8 +6,6 @@
 
         public string Description { get; set; } = null!;
 
-        public string Image { get; set; } = null!;
-
         public int MemberId { get; set; }
 
         public int ArtworkId { get; set; }

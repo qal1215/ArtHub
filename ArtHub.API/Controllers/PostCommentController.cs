@@ -20,14 +20,14 @@ namespace ArtHub.API.Controllers
             _commentService = commentService;
         }
 
-        [HttpPost("post")]
+        [HttpPost("")]
         public async Task<IActionResult> CreatePost([FromBody] CreatePost creating)
         {
             var newPost = await _postService.AddPostAsync(creating);
             return CreatedAtAction(nameof(GetPostById), new { postId = newPost.PostId }, newPost);
         }
 
-        [HttpGet("post/{postId}")]
+        [HttpGet("{postId}")]
         public async Task<IActionResult> GetPostById([FromRoute] int postId)
         {
             var posts = await _postService.GetPostAsync(postId);

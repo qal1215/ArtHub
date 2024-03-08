@@ -56,6 +56,7 @@ namespace ArtHubAPI.Controllers
             var artworkPaged = await _artworkService.GetArtworksPaging(queryPaging);
             return Ok(artworkPaged);
         }
+
+
     }
 }
-

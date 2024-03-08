@@ -1,6 +1,5 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.AccountDTO;
-using ArtHub.Repository;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
 using AutoMapper;
@@ -10,12 +9,12 @@ namespace ArtHub.Service
     public class AccountService : IAccountService
     {
         private readonly IMapper _mapper;
-        private readonly IAccountRepository _accountRepository = null;
+        private readonly IAccountRepository _accountRepository;
 
-        public AccountService(IMapper mapper)
+        public AccountService(IMapper mapper, IAccountRepository accountRepository)
         {
             _mapper = mapper;
-            _accountRepository = new AccountRepository();
+            _accountRepository = accountRepository;
         }
 
 

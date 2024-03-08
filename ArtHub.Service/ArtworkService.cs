@@ -1,7 +1,6 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.ArtworkDTO;
 using ArtHub.DAO.ModelResult;
-using ArtHub.Repository;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
 using AutoMapper;
@@ -14,10 +13,10 @@ namespace ArtHub.Service
         private readonly IGenreRepository _genreRepository;
         private readonly IMapper _mapper;
 
-        public ArtworkService(IMapper mapper)
+        public ArtworkService(IMapper mapper, IArtworkRepository artworkRepository, IGenreRepository genreRepository)
         {
-            _artworkRepository = new ArtworkRepository();
-            _genreRepository = new GenreRepository();
+            _artworkRepository = artworkRepository;
+            _genreRepository = genreRepository;
             _mapper = mapper;
         }
 
