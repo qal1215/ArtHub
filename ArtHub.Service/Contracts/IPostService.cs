@@ -20,5 +20,7 @@ namespace ArtHub.Service.Contracts
 
         Task<PagedResult<Post>> GetPostByUserId(int userId, QueryPaging queryPaging);
 
+        Task<PagedResult<Post>> GetPostByArtworkId(int artworkId, QueryPaging queryPaging);
+
     }
 }

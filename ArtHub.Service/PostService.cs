@@ -58,13 +58,13 @@ namespace ArtHub.Service
         }
 
         public async Task<bool> IsExisted(int postId)
-        {
-            return await _postRepository.IsExisted(postId);
-        }
+            => await _postRepository.IsExisted(postId);
+
 
         public async Task<PagedResult<Post>> GetPostByUserId(int userId, QueryPaging queryPaging)
-        {
-            return await _postRepository.GetPostsByArtistIdAsync(userId, queryPaging);
-        }
+            => await _postRepository.GetPostsByArtistIdAsync(userId, queryPaging);
+
+        public async Task<PagedResult<Post>> GetPostByArtworkId(int artworkId, QueryPaging queryPaging)
+            => await _postRepository.GetPostsByArtworkIdAsync(artworkId, queryPaging);
     }
 }
