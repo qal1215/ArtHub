@@ -2,6 +2,7 @@
 using ArtHub.DAO.AccountDTO;
 using ArtHub.DAO.ArtworkDTO;
 using ArtHub.DAO.BalanceDTO;
+using ArtHub.DAO.OrderDTO;
 using ArtHub.DAO.PostCommentDTO;
 using AutoMapper;
 
@@ -23,6 +24,7 @@ namespace ArtHub.DAO.Mapper
             CreateMap<CreateComment, Comment>();
 
             CreateMap<Member, CurrentBalance>();
+            CreateMap<CreateOrder, Order>();
         }
     }
 }
