@@ -1,4 +1,5 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.DAO.ModelResult;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArtHub.DAO
@@ -41,6 +42,28 @@ namespace ArtHub.DAO
             return await dbContext.Posts.ToListAsync();
         }
 
+        public async Task<PagedResult<Post>> GetPostsAsync(QueryPaging queryPaging)
+        {
+            var posts = await dbContext.Posts
+                .OrderBy(p => p.PostId)
+                .OrderDescending()
+                .Skip((queryPaging.Page - 1) * queryPaging.PageSize)
+                .Take(queryPaging.PageSize)
+                .ToListAsync();
+
+            var totalPost = await dbContext.Posts.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalPost / (double)queryPaging.PageSize);
+
+            return new PagedResult<Post>
+            {
+                Items = posts,
+                Page = queryPaging.Page,
+                PageSize = queryPaging.PageSize,
+                TotalItems = totalPost,
+                TotalPages = totalPages
+            };
+        }
+
         public async Task<Post> AddPostAsync(Post post)
         {
             await dbContext.AddAsync(post);
@@ -48,9 +71,49 @@ namespace ArtHub.DAO
             return post;
         }
 
-        public async Task<List<Post>> GetPostsByArtistAsync(int artistID)
+        public async Task<IList<Post>> GetPostsByArtistIdAsync(int artistId)
+            => await dbContext.Posts.Where(p => p.MemberId == artistId).ToListAsync();
+
+        public async Task<PagedResult<Post>> GetPostsByArtistIdAsync(int artistId, QueryPaging queryPaging)
         {
-            return await dbContext.Posts.Where(p => p.MemberId == artistID).ToListAsync();
+            var posts = await dbContext.Posts
+                .Where(p => p.MemberId == artistId)
+                .Skip((queryPaging.Page - 1) * queryPaging.PageSize)
+                .Take(queryPaging.PageSize)
+                .ToListAsync();
+
+            var totalPost = await dbContext.Posts.CountAsync(p => p.MemberId == artistId);
+            var totalPages = (int)Math.Ceiling(totalPost / (double)queryPaging.PageSize);
+
+            return new PagedResult<Post>
+            {
+                Items = posts,
+                Page = queryPaging.Page,
+                PageSize = queryPaging.PageSize,
+                TotalItems = totalPost,
+                TotalPages = totalPages
+            };
+        }
+
+        public async Task<PagedResult<Post>> GetPostsByArtworkIdAsync(int artworkId, QueryPaging queryPaging)
+        {
+            var posts = await dbContext.Posts
+                .Where(p => p.ArtworkId == artworkId)
+                .Skip((queryPaging.Page - 1) * queryPaging.PageSize)
+                .Take(queryPaging.PageSize)
+                .ToListAsync();
+
+            var totalPost = await dbContext.Posts.CountAsync(p => p.ArtworkId == artworkId);
+            var totalPages = (int)Math.Ceiling(totalPost / (double)queryPaging.PageSize);
+
+            return new PagedResult<Post>
+            {
+                Items = posts,
+                Page = queryPaging.Page,
+                PageSize = queryPaging.PageSize,
+                TotalItems = totalPost,
+                TotalPages = totalPages
+            };
         }
 
         public async Task<Post?> UpdatePostAsync(int id, Post post)

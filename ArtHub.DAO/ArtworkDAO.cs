@@ -89,13 +89,17 @@ namespace ArtHub.DAO
         public async Task<PagedResult<Artwork>> GetArtworksPaging(int page, int pageSize, string q)
         {
             var artworks = await dbContext.Artworks
-                .Where(artwork => artwork.Description.Contains(q) || artwork.Name.Contains(q))
+                .Where(artwork => artwork.Description.ToUpper().Contains(q)
+                || artwork.Name.ToUpper().Contains(q)
+                || artwork.Genre.Name.ToUpper().Contains(q))
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
             var totalItem = await dbContext.Artworks
-                .Where(artwork => artwork.Description.Contains(q) || artwork.Name.Contains(q))
+                .Where(artwork => artwork.Description.ToUpper().Contains(q)
+                || artwork.Name.ToUpper().Contains(q)
+                || artwork.Genre.Name.ToUpper().Contains(q))
                 .CountAsync();
             decimal totalPages = (decimal)totalItem / pageSize;
 

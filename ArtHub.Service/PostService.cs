@@ -1,4 +1,5 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.DAO.ModelResult;
 using ArtHub.DAO.PostCommentDTO;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
@@ -31,7 +32,7 @@ namespace ArtHub.Service
 
         public async Task<Post?> GetPostAsync(int postId)
         {
-            var post = await _postRepository.GetPost(postId);
+            var post = await _postRepository.GetPostAsyns(postId);
 
             if (post is null) return null;
 
@@ -61,5 +62,9 @@ namespace ArtHub.Service
             return await _postRepository.IsExisted(postId);
         }
 
+        public async Task<PagedResult<Post>> GetPostByUserId(int userId, QueryPaging queryPaging)
+        {
+            return await _postRepository.GetPostsByArtistIdAsync(userId, queryPaging);
+        }
     }
 }
