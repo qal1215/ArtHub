@@ -55,9 +55,9 @@ namespace ArtHub.Repository
             return updateTo;
         }
 
-        public async Task<PagedResult<Artwork>> GetArtworksPaging(int page, int pageSize, string? q)
+        public async Task<PagedResult<Artwork>> GetArtworksPaging(int page, int pageSize, string q)
         {
-            return await ArtworkDAO.Instance.GetArtworksPaging(page, pageSize, q);
+            return await ArtworkDAO.Instance.GetArtworksPaging(page, pageSize, q.Trim().ToUpper());
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ArtHub.DAO.PostCommentDTO;
+﻿using ArtHub.DAO.ModelResult;
+using ArtHub.DAO.PostCommentDTO;
 using ArtHub.Service.Contracts;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -112,5 +113,32 @@ namespace ArtHub.API.Controllers
             var result = await _commentService.UpdateCommentAsync(commentId, updating);
             return Ok(result);
         }
+
+        [HttpGet("/post/user/{userId}")]
+        public async Task<IActionResult> GetPostByUserId([FromRoute] int userId, [FromQuery] QueryPaging queryPaging)
+        {
+            var result = await _postService.GetPostByUserId(userId, queryPaging);
+
+            if (result.TotalItems <= 0)
+            {
+                return NotFound(result);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("/post/artwork/{artworkId}")]
+        public async Task<IActionResult> GetPostByArtworkId([FromRoute] int userId, [FromQuery] QueryPaging queryPaging)
+        {
+            var result = await _postService.GetPostByUserId(userId, queryPaging);
+
+            if (result.TotalItems <= 0)
+            {
+                return NotFound(result);
+            }
+
+            return Ok(result);
+        }
+
     }
 }

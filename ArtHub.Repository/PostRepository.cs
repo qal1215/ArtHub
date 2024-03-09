@@ -1,5 +1,6 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO;
+using ArtHub.DAO.ModelResult;
 using ArtHub.Repository.Contracts;
 
 namespace ArtHub.Repository
@@ -10,16 +11,20 @@ namespace ArtHub.Repository
             => await PostDAO.Instance.AddPostAsync(post);
 
 
-        public async Task<Post?> GetPost(int id)
+        public async Task<Post?> GetPostAsyns(int id)
             => await PostDAO.Instance.GetPost(id);
 
-        public Task<List<Post>> GetPostsAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<PagedResult<Post>> GetPostsAsync(QueryPaging queryPaging)
+        => await PostDAO.Instance.GetPostsAsync(queryPaging);
 
-        public async Task<List<Post>> GetPostsByArtistAsync(int artistID)
-            => await PostDAO.Instance.GetPostsByArtistAsync(artistID);
+        public async Task<IList<Post>> GetPostsByArtistIdAsync(int artistID)
+            => await PostDAO.Instance.GetPostsByArtistIdAsync(artistID);
+
+        public async Task<PagedResult<Post>> GetPostsByArtistIdAsync(int artistId, QueryPaging queryPaging)
+            => await PostDAO.Instance.GetPostsByArtistIdAsync(artistId, queryPaging);
+
+        public async Task<PagedResult<Post>> GetPostsByArtworkIdAsync(int artworkId, QueryPaging queryPaging)
+            => await PostDAO.Instance.GetPostsByArtworkIdAsync(artworkId, queryPaging);
 
         public async Task<Post?> UpdatePostAsync(int id, Post post)
             => await PostDAO.Instance.UpdatePostAsync(id, post);

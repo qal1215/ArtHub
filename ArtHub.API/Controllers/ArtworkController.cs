@@ -23,7 +23,6 @@ namespace ArtHubAPI.Controllers
 
         [EnableQuery]
         [HttpGet("{artworkId}")]
-        //[Authorize]
         public async Task<IActionResult> GetArtworkById([FromRoute] int artworkId)
         {
             var artwork = await _artworkService.GetArtworkById(artworkId);
@@ -33,7 +32,6 @@ namespace ArtHubAPI.Controllers
         }
 
         [HttpPost]
-        //[Authorize]
         public async Task<IActionResult> AddArtwork([FromBody] CreateArtwork creating)
         {
             var newArtwork = await _artworkService.CreateArtwork(creating);

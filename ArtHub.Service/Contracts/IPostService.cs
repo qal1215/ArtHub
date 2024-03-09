@@ -1,4 +1,5 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.DAO.ModelResult;
 using ArtHub.DAO.PostCommentDTO;
 
 namespace ArtHub.Service.Contracts
@@ -6,9 +7,18 @@ namespace ArtHub.Service.Contracts
     public interface IPostService
     {
         Task<Post> AddPostAsync(CreatePost post);
+
         Task<List<Post>?> GetPostsAsync();
+
         Task<Post?> GetPostAsync(int postId);
+
         Task<Post?> UpdatePostAsync(int postId, UpdatePost post);
+
         Task<bool> DeletePostAsync(int postId);
+
+        Task<bool> IsExisted(int postId);
+
+        Task<PagedResult<Post>> GetPostByUserId(int userId, QueryPaging queryPaging);
+
     }
 }
