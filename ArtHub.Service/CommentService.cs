@@ -1,6 +1,5 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.DAO.PostCommentDTO;
-using ArtHub.Repository;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
 using AutoMapper;
@@ -12,10 +11,10 @@ namespace ArtHub.Service
         private readonly IMapper _mapper;
         private readonly ICommentRepository _commentRepository;
 
-        public CommentService(IMapper mapper)
+        public CommentService(IMapper mapper, ICommentRepository commentRepository)
         {
             _mapper = mapper;
-            _commentRepository = new CommentRepository();
+            _commentRepository = commentRepository;
         }
 
         public async Task<Comment> AddCommentAsync(CreateComment comment)
@@ -23,6 +22,9 @@ namespace ArtHub.Service
             Comment addComment = _mapper.Map<Comment>(comment);
             return await _commentRepository.AddCommentAsync(addComment);
         }
+
+        public async Task DeleteCommentAsync(int commentId)
+            => await _commentRepository.DeleteCommentAsync(commentId);
 
         public async Task<Comment?> GetCommentById(int commentId)
         {
@@ -32,6 +34,12 @@ namespace ArtHub.Service
         public async Task<List<Comment>> GetCommentsByPostId(int postId)
         {
             return await _commentRepository.GetCommentsByPostId(postId);
+        }
+
+        public async Task<Comment?> UpdateCommentAsync(int commentId, UpdateComment updateComment)
+        {
+            Comment comment = _mapper.Map<Comment>(updateComment);
+            return await _commentRepository.UpdateCommentAsync(commentId, comment);
         }
     }
 }

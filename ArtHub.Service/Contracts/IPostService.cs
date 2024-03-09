@@ -8,7 +8,7 @@ namespace ArtHub.Service.Contracts
         Task<Post> AddPostAsync(CreatePost post);
         Task<List<Post>?> GetPostsAsync();
         Task<Post?> GetPostAsync(int postId);
-        Task<Post?> UpdatePostAsync(int postId, Post post);
+        Task<Post?> UpdatePostAsync(int postId, UpdatePost post);
         Task<bool> DeletePostAsync(int postId);
     }
 }

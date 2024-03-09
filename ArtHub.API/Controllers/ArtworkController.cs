@@ -56,6 +56,32 @@ namespace ArtHubAPI.Controllers
             var artworkPaged = await _artworkService.GetArtworksPaging(queryPaging);
             return Ok(artworkPaged);
         }
+
+        [HttpPut("{artworkId}")]
+        public async Task<IActionResult> UpdateArtwork([FromRoute] int artworkId, [FromBody] UpdateArtwork update)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { msg = "Invalid model" });
+            }
+
+            if (artworkId != update.ArtworkId)
+            {
+                return BadRequest(new { msg = "Invalid artworkId" });
+            }
+
+            var result = await _artworkService.UpdateArtwork(update);
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{artworkId}")]
+        public async Task<IActionResult> DeleteArtwork([FromRoute] int artworkId)
+        {
+            var result = await _artworkService.DeleteArtwork(artworkId);
+            if (!result)
+                return NotFound();
+            return Ok();
+        }
     }
 }
-

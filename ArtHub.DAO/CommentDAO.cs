@@ -50,5 +50,24 @@ namespace ArtHub.DAO
         {
             return await dbContext.Comments.FirstOrDefaultAsync(c => c.CommentId == commentId);
         }
+
+        public async Task DeleteCommentAsync(int commentId)
+        {
+            var comment = await dbContext.Comments.FirstOrDefaultAsync(c => c.CommentId == commentId);
+
+            dbContext.Comments.Remove(comment!);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Comment?> UpdateCommentAsync(int commentId, Comment comment)
+        {
+            var commentToUpdate = await dbContext.Comments.FirstOrDefaultAsync(c => c.CommentId == commentId);
+            if (commentToUpdate != null)
+            {
+                commentToUpdate.Content = comment.Content;
+                await dbContext.SaveChangesAsync();
+            }
+            return commentToUpdate;
+        }
     }
 }

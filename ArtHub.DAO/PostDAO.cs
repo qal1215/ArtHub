@@ -31,7 +31,6 @@ namespace ArtHub.DAO
         {
             var post = await dbContext.Posts
                 .Where(p => p.PostId == id)
-                .Include(p => p.Comments)
                 .FirstOrDefaultAsync();
 
             return post;
@@ -61,7 +60,6 @@ namespace ArtHub.DAO
             {
                 postToUpdate.Title = post.Title;
                 postToUpdate.Description = post.Description;
-                postToUpdate.Image = post.Image;
                 await dbContext.SaveChangesAsync();
             }
             return postToUpdate;

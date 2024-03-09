@@ -1,6 +1,5 @@
-﻿using ArtHub.DAO.Mapper;
-using ArtHub.Service;
-using ArtHub.Service.Contracts;
+﻿using ArtHub.API.Dependencies;
+using ArtHub.DAO.Mapper;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OData;
@@ -23,11 +22,9 @@ builder.Services.AddCors(options =>
         });
 });
 builder.Services.AddControllers().AddOData(options => options.Select().Filter().OrderBy().Count().SetMaxTop(100).Expand().Filter());
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<IArtworkService, ArtworkService>();
-builder.Services.AddScoped<IPostService, PostService>();
-builder.Services.AddScoped<ICommentService, CommentService>();
-builder.Services.AddScoped<IBalanceService, BalanceService>();
+
+// Register dependencies
+builder.Services.RegisterDependencies();
 
 
 builder.Services.AddEndpointsApiExplorer();
