@@ -83,5 +83,10 @@ namespace ArtHub.Service
             queryPaging.Query = queryPaging.Query ?? string.Empty;
             return await _artworkRepository.GetArtworksPaging(queryPaging.Page, queryPaging.PageSize, queryPaging.Query);
         }
+
+        public async Task<bool> ReportArtwork(int artworkId)
+        {
+            return await _artworkRepository.ReportArtwork(artworkId);
+        }
     }
 }

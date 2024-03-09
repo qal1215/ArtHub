@@ -21,5 +21,6 @@ namespace ArtHub.Repository.Contracts
         public Task<IEnumerable<Artwork>> GetArtworkPredicate(Expression<Func<Artwork, bool>> predicate);
 
         public Task<PagedResult<Artwork>> GetArtworksPaging(int page, int pageSize, string? q);
+        public Task<bool> ReportArtwork(int artworkId);
     }
 }

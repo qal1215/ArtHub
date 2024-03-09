@@ -19,5 +19,7 @@ namespace ArtHub.Service.Contracts
         public Task<bool> DeleteArtwork(int id);
 
         public Task<PagedResult<Artwork>> GetArtworksPaging(QueryPaging queryPaging);
+
+        public Task<bool> ReportArtwork(int artworkId);
     }
 }
