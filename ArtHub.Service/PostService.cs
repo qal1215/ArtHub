@@ -44,8 +44,9 @@ namespace ArtHub.Service
             throw new NotImplementedException();
         }
 
-        public async Task<Post?> UpdatePostAsync(int postId, Post post)
+        public async Task<Post?> UpdatePostAsync(int postId, UpdatePost updatePost)
         {
+            var post = _mapper.Map<Post>(updatePost);
             var isExist = await _postRepository.IsExisted(postId);
             if (!isExist)
             {

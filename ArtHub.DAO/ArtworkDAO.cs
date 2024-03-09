@@ -108,6 +108,5 @@ namespace ArtHub.DAO
                 Items = artworks
             };
         }
-
     }
 }

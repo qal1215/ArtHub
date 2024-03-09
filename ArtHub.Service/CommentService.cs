@@ -23,6 +23,9 @@ namespace ArtHub.Service
             return await _commentRepository.AddCommentAsync(addComment);
         }
 
+        public async Task DeleteCommentAsync(int commentId)
+            => await _commentRepository.DeleteCommentAsync(commentId);
+
         public async Task<Comment?> GetCommentById(int commentId)
         {
             return await _commentRepository.GetCommentAsync(commentId);
@@ -31,6 +34,12 @@ namespace ArtHub.Service
         public async Task<List<Comment>> GetCommentsByPostId(int postId)
         {
             return await _commentRepository.GetCommentsByPostId(postId);
+        }
+
+        public async Task<Comment?> UpdateCommentAsync(int commentId, UpdateComment updateComment)
+        {
+            Comment comment = _mapper.Map<Comment>(updateComment);
+            return await _commentRepository.UpdateCommentAsync(commentId, comment);
         }
     }
 }

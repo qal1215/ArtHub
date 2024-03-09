@@ -64,8 +64,9 @@ namespace ArtHub.Service
             return await _artworkRepository.GetArtworkPredicate(a => a.IsPublic == true);
         }
 
-        public async Task<Artwork?> UpdateArtwork(Artwork artwork)
+        public async Task<Artwork?> UpdateArtwork(UpdateArtwork updateArtwork)
         {
+            var artwork = _mapper.Map<Artwork>(updateArtwork);
             var isExist = await _artworkRepository.IsExistArtwork(artwork.ArtworkId);
             if (!isExist)
             {

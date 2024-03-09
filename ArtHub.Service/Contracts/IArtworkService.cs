@@ -12,7 +12,7 @@ namespace ArtHub.Service.Contracts
 
         public Task<IEnumerable<Artwork>> GetArtworksByTitle(string title);
 
-        public Task<Artwork?> UpdateArtwork(Artwork artwork);
+        public Task<Artwork?> UpdateArtwork(UpdateArtwork artwork);
 
         public Task<Artwork> CreateArtwork(CreateArtwork artwork);
 

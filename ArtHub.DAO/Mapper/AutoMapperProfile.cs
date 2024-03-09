@@ -19,9 +19,12 @@ namespace ArtHub.DAO.Mapper
             CreateMap<Member, ViewAccount>();
 
             CreateMap<CreateArtwork, Artwork>();
+            CreateMap<UpdateArtwork, Artwork>();
 
             CreateMap<CreatePost, Post>();
+            CreateMap<UpdatePost, Post>();
             CreateMap<CreateComment, Comment>();
+            CreateMap<UpdateComment, Comment>();
 
             CreateMap<Member, CurrentBalance>();
             CreateMap<PostRating, Rating>()

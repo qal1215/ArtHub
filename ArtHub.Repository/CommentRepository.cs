@@ -20,5 +20,15 @@ namespace ArtHub.Repository
         {
             return await CommentDAO.Instance.GetCommentById(commentId);
         }
+
+        public Task DeleteCommentAsync(int commentId)
+        {
+            return CommentDAO.Instance.DeleteCommentAsync(commentId);
+        }
+
+        public async Task<Comment?> UpdateCommentAsync(int commentId, Comment addComment)
+        {
+            return await CommentDAO.Instance.UpdateCommentAsync(commentId, addComment);
+        }
     }
 }
