@@ -2,6 +2,7 @@
 using ArtHub.DAO.AccountDTO;
 using ArtHub.DAO.ArtworkDTO;
 using ArtHub.DAO.BalanceDTO;
+using ArtHub.DAO.OrderDTO;
 using ArtHub.DAO.PostCommentDTO;
 using ArtHub.DAO.RatingDTO;
 using AutoMapper;
@@ -27,6 +28,7 @@ namespace ArtHub.DAO.Mapper
             CreateMap<UpdateComment, Comment>();
 
             CreateMap<Member, CurrentBalance>();
+            CreateMap<CreateOrder, Order>();
             CreateMap<PostRating, Rating>()
                 .ForMember(dest => dest.MemberId, opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dest => dest.Rate, opt => opt.MapFrom(src => src.Rating));

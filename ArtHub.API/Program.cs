@@ -22,6 +22,12 @@ builder.Services.AddCors(options =>
         });
 });
 builder.Services.AddControllers().AddOData(options => options.Select().Filter().OrderBy().Count().SetMaxTop(100).Expand().Filter());
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IArtworkService, ArtworkService>();
+builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IBalanceService, BalanceService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 // Register dependencies
 builder.Services.RegisterDependencies();

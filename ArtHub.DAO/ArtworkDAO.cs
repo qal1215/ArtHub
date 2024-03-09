@@ -108,5 +108,17 @@ namespace ArtHub.DAO
                 Items = artworks
             };
         }
+
+        public async Task<bool> ReportArtwork(int artworkId)
+        {
+            var artwork = await dbContext.Artworks.FirstOrDefaultAsync(a => a.ArtworkId == artworkId);
+            if (artwork is not null)
+            {
+                artwork.IsPublic = true;
+                return true;
+            }
+
+            return false;
+        }
     }
 }

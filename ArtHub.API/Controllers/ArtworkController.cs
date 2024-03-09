@@ -58,6 +58,21 @@ namespace ArtHubAPI.Controllers
         }
 
         [HttpPut("{artworkId}")]
+        public async Task<IActionResult> ReportArtwork(int artworkId)
+        {
+            var flag = await _artworkService.ReportArtwork(artworkId);
+
+            if (flag)
+            {
+                return NoContent();
+            }
+
+            return BadRequest();
+        }
+    }
+}
+
+        [HttpPut("{artworkId}")]
         public async Task<IActionResult> UpdateArtwork([FromRoute] int artworkId, [FromBody] UpdateArtwork update)
         {
             if (!ModelState.IsValid)
