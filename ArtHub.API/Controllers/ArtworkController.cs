@@ -69,8 +69,6 @@ namespace ArtHubAPI.Controllers
 
             return BadRequest();
         }
-    }
-}
 
         [HttpPut("{artworkId}")]
         public async Task<IActionResult> UpdateArtwork([FromRoute] int artworkId, [FromBody] UpdateArtwork update)
