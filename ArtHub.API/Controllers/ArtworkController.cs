@@ -57,7 +57,7 @@ namespace ArtHubAPI.Controllers
             return Ok(artworkPaged);
         }
 
-        [HttpPut("{artworkId}")]
+        [HttpPut("report/{artworkId}")]
         public async Task<IActionResult> ReportArtwork(int artworkId)
         {
             var flag = await _artworkService.ReportArtwork(artworkId);

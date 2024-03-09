@@ -24,7 +24,7 @@ namespace ArtHub.API.Dependencies
             services.AddScoped<IRatingRepository, RatingRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IGenreRepository, GenreRepository>();
-            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
         }
     }
 }
