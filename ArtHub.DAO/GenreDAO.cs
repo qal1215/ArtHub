@@ -29,7 +29,7 @@ namespace ArtHub.DAO
             }
         }
 
-        public async Task<IEnumerable<Genre>> GetAllGenres()
+        public async Task<IList<Genre>> GetAllGenres()
         {
             return await dbContext.Genres.ToListAsync();
         }

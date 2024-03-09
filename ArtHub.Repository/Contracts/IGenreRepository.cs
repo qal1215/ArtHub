@@ -7,5 +7,7 @@ namespace ArtHub.Repository.Contracts
         Task<Genre?> SearchGenreByName(string genreName);
 
         Task<Genre> AddGenre(string genreName);
+
+        Task<IList<Genre>> GetGenresAsync();
     }
 }

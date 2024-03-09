@@ -15,6 +15,8 @@ namespace ArtHub.API.Dependencies
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IRatingService, RatingService>();
+            services.AddScoped<IGenreService, GenreService>();
+
 
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IArtworkRepository, ArtworkRepository>();

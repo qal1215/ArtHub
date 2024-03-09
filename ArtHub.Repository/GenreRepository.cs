@@ -11,6 +11,9 @@ namespace ArtHub.Repository
             return await GenreDAO.Instance.CreateGenre(genreName);
         }
 
+        public async Task<IList<Genre>> GetGenresAsync()
+            => await GenreDAO.Instance.GetAllGenres();
+
         public async Task<Genre?> SearchGenreByName(string genreName)
         {
             return await GenreDAO.Instance.SearchGenreByName(genreName);
