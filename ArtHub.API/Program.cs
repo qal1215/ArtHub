@@ -28,6 +28,7 @@ builder.Services.AddScoped<IArtworkService, ArtworkService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IBalanceService, BalanceService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 
 builder.Services.AddEndpointsApiExplorer();
