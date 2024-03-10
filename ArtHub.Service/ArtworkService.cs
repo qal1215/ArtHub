@@ -3,6 +3,7 @@ using ArtHub.DAO.ArtworkDTO;
 using ArtHub.DAO.ModelResult;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
+using ArtHub.Service.Helper;
 using AutoMapper;
 
 namespace ArtHub.Service
@@ -78,9 +79,7 @@ namespace ArtHub.Service
 
         public async Task<PagedResult<Artwork>> GetArtworksPaging(QueryPaging queryPaging)
         {
-            queryPaging.Page = queryPaging.Page > 0 ? queryPaging.Page : 1;
-            queryPaging.PageSize = queryPaging.PageSize > 0 ? queryPaging.PageSize : 10;
-            queryPaging.Query = queryPaging.Query ?? string.Empty;
+            queryPaging = queryPaging.CheckQueryPaging();
             return await _artworkRepository.GetArtworksPaging(queryPaging.Page, queryPaging.PageSize, queryPaging.Query);
         }
     }
