@@ -1,7 +1,7 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.ArtworkDTO;
+using ArtHub.DTO.ArtworkDTO;
 
-namespace ArtHub.DAO.AccountDTO
+namespace ArtHub.DTO.AccountDTO
 {
     public class ViewAccount
     {

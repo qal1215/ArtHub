@@ -1,6 +1,6 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.ArtworkDTO;
-using ArtHub.DAO.ModelResult;
+using ArtHub.DTO.ArtworkDTO;
+using ArtHub.DTO.ModelResult;
 
 namespace ArtHub.Service.Contracts
 {

@@ -1,4 +1,4 @@
-﻿using ArtHub.DAO.AccountDTO;
+﻿using ArtHub.DTO.AccountDTO;
 using ArtHub.Service.Contracts;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;

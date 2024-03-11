@@ -1,5 +1,5 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.ModelResult;
+using ArtHub.DTO.ModelResult;
 using System.Linq.Expressions;
 
 namespace ArtHub.Repository.Contracts

@@ -1,12 +1,12 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.AccountDTO;
-using ArtHub.DAO.ArtworkDTO;
-using ArtHub.DAO.BalanceDTO;
-using ArtHub.DAO.PostCommentDTO;
-using ArtHub.DAO.RatingDTO;
+using ArtHub.DTO.AccountDTO;
+using ArtHub.DTO.ArtworkDTO;
+using ArtHub.DTO.BalanceDTO;
+using ArtHub.DTO.PostCommentDTO;
+using ArtHub.DTO.RatingDTO;
 using AutoMapper;
 
-namespace ArtHub.DAO.Mapper
+namespace ArtHub.DTO.Mapper
 {
     public class AutoMapperProfile : Profile
     {
@@ -32,6 +32,8 @@ namespace ArtHub.DAO.Mapper
                 .ForMember(dest => dest.Rate, opt => opt.MapFrom(src => src.Rating));
 
             CreateMap<Artwork, ViewArtwork>();
+            CreateMap<Post, ViewPost>();
+            CreateMap<Comment, ViewComment>();
         }
     }
 }

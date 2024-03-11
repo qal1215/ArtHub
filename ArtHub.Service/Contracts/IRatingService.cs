@@ -1,4 +1,4 @@
-﻿using ArtHub.DAO.RatingDTO;
+﻿using ArtHub.DTO.RatingDTO;
 
 namespace ArtHub.Service.Contracts;
 public interface IRatingService

@@ -1,4 +1,4 @@
-﻿using ArtHub.DAO.ModelResult;
+﻿using ArtHub.DTO.ModelResult;
 
 namespace ArtHub.Service.Helper
 {

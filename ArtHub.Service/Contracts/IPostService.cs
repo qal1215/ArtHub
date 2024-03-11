@@ -1,6 +1,6 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.ModelResult;
-using ArtHub.DAO.PostCommentDTO;
+using ArtHub.DTO.ModelResult;
+using ArtHub.DTO.PostCommentDTO;
 
 namespace ArtHub.Service.Contracts
 {
@@ -8,9 +8,9 @@ namespace ArtHub.Service.Contracts
     {
         Task<Post> AddPostAsync(CreatePost post);
 
-        Task<List<Post>?> GetPostsAsync();
+        Task<List<ViewPost>?> GetListPostAsync();
 
-        Task<Post?> GetPostAsync(int postId);
+        Task<ViewPost?> GetPostAsync(int postId);
 
         Task<Post?> UpdatePostAsync(int postId, UpdatePost post);
 
@@ -18,9 +18,9 @@ namespace ArtHub.Service.Contracts
 
         Task<bool> IsExisted(int postId);
 
-        Task<PagedResult<Post>> GetPostByUserId(int userId, QueryPaging queryPaging);
+        Task<PagedResult<ViewPost>> GetPostByUserId(int userId, QueryPaging queryPaging);
 
-        Task<PagedResult<Post>> GetPostByArtworkId(int artworkId, QueryPaging queryPaging);
+        Task<PagedResult<ViewPost>> GetPostByArtworkId(int artworkId, QueryPaging queryPaging);
 
     }
 }

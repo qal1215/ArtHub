@@ -1,5 +1,5 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.PostCommentDTO;
+using ArtHub.DTO.PostCommentDTO;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
 using AutoMapper;
@@ -10,11 +10,14 @@ namespace ArtHub.Service
     {
         private readonly IMapper _mapper;
         private readonly ICommentRepository _commentRepository;
+        private readonly IAccountRepository _accountRepository;
 
-        public CommentService(IMapper mapper, ICommentRepository commentRepository)
+        public CommentService(IMapper mapper, ICommentRepository commentRepository
+            , IAccountRepository accountRepository)
         {
             _mapper = mapper;
             _commentRepository = commentRepository;
+            _accountRepository = accountRepository;
         }
 
         public async Task<Comment> AddCommentAsync(CreateComment comment)
@@ -26,14 +29,38 @@ namespace ArtHub.Service
         public async Task DeleteCommentAsync(int commentId)
             => await _commentRepository.DeleteCommentAsync(commentId);
 
-        public async Task<Comment?> GetCommentById(int commentId)
+        public async Task<ViewComment?> GetCommentById(int commentId)
         {
-            return await _commentRepository.GetCommentAsync(commentId);
+            var comment = await _commentRepository.GetCommentAsync(commentId);
+            if (comment is null) return null;
+
+            var viewComment = _mapper.Map<ViewComment>(comment);
+            var user = await _accountRepository.GetBranchAccountByIdAsync(viewComment.MemberId);
+            if (user != null)
+            {
+                viewComment.MemberName = user.FullName;
+                viewComment.MemberAvatar = user.Avatar;
+            }
+
+            return viewComment;
         }
 
-        public async Task<List<Comment>> GetCommentsByPostId(int postId)
+        public async Task<IEnumerable<ViewComment>> GetCommentsByPostId(int postId)
         {
-            return await _commentRepository.GetCommentsByPostId(postId);
+            var comment = await _commentRepository.GetCommentsByPostId(postId);
+            var viewComment = _mapper.Map<List<ViewComment>>(comment);
+            foreach (var item in viewComment)
+            {
+                var user = await _accountRepository.GetBranchAccountByIdAsync(item.MemberId);
+
+                if (user != null)
+                {
+                    item.MemberName = user.FullName;
+                    item.MemberAvatar = user.Avatar;
+                }
+            }
+
+            return viewComment;
         }
 
         public async Task<Comment?> UpdateCommentAsync(int commentId, UpdateComment updateComment)

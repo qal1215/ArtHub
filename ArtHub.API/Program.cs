@@ -1,6 +1,6 @@
 ﻿using ArtHub.API.Dependencies;
 using ArtHub.BusinessObject;
-using ArtHub.DAO.Mapper;
+using ArtHub.DTO.Mapper;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;

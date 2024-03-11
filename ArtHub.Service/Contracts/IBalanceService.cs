@@ -1,5 +1,5 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.BalanceDTO;
+using ArtHub.DTO.BalanceDTO;
 
 namespace ArtHub.Service.Contracts
 {

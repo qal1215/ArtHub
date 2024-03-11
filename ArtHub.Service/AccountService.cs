@@ -1,5 +1,5 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.AccountDTO;
+using ArtHub.DTO.AccountDTO;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
 using AutoMapper;

@@ -1,4 +1,4 @@
-﻿using ArtHub.DAO.RatingDTO;
+﻿using ArtHub.DTO.RatingDTO;
 using ArtHub.Service.Contracts;
 using Microsoft.AspNetCore.Mvc;
 

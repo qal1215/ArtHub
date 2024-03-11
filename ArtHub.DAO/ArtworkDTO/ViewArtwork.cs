@@ -1,4 +1,4 @@
-﻿namespace ArtHub.DAO.ArtworkDTO
+﻿namespace ArtHub.DTO.ArtworkDTO
 {
     public class ViewArtwork
     {

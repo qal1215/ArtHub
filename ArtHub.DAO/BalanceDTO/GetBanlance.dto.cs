@@ -1,7 +1,7 @@
 ﻿using ArtHub.BusinessObject;
 using System.ComponentModel.DataAnnotations;
 
-namespace ArtHub.DAO.BalanceDTO
+namespace ArtHub.DTO.BalanceDTO
 {
     public class GetBanlance
     {
