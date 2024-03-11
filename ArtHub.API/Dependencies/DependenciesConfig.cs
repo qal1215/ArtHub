@@ -1,4 +1,5 @@
-﻿using ArtHub.Repository;
+﻿using ArtHub.BusinessObject;
+using ArtHub.Repository;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service;
 using ArtHub.Service.Contracts;
@@ -9,6 +10,9 @@ namespace ArtHub.API.Dependencies
     {
         public static void RegisterDependencies(this IServiceCollection services)
         {
+            services.AddScoped<ArtHub2024DbContext, ArtHub2024DbContext>();
+
+
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IArtworkService, ArtworkService>();
             services.AddScoped<IBalanceService, BalanceService>();

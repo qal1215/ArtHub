@@ -1,66 +1,108 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO;
 using ArtHub.DAO.ModelResult;
 using ArtHub.Repository.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace ArtHub.Repository
 {
     public class ArtworkRepository : IArtworkRepository
     {
-        public async Task<Artwork> CreateArtwork(Artwork artwork) => await ArtworkDAO.Instance.AddArtworkAsync(artwork);
+        private readonly ArtHub2024DbContext _dbContext;
 
-        public async Task<bool> DeleteArtwork(int id)
+        public ArtworkRepository(ArtHub2024DbContext dbContext)
         {
-            var isExist = await ArtworkDAO.Instance.IsExistArtwork(id);
-            if (!isExist)
+            _dbContext = dbContext;
+        }
+
+        public async Task<Artwork> CreateArtwork(Artwork artwork)
+        {
+            await _dbContext.AddAsync(artwork);
+            await _dbContext.SaveChangesAsync();
+            return artwork;
+        }
+
+        public async Task<bool> DeleteArtwork(int artworkId)
+        {
+            var artwork = await _dbContext.Artworks.FirstOrDefaultAsync(a => a.ArtworkId == artworkId);
+            if (artwork is null)
             {
                 return false;
-            }
 
-            await ArtworkDAO.Instance.DeleteArtworkAsync(id);
+            }
+            _dbContext.Remove(artwork);
+            await _dbContext.SaveChangesAsync();
             return true;
         }
 
-        public async Task<Artwork?> GetArtwork(int id)
+        public async Task<Artwork?> GetArtwork(int artworkId)
         {
-            var isExist = await ArtworkDAO.Instance.IsExistArtwork(id);
-            if (!isExist)
-            {
-                return null;
-            }
+            var artwork = await _dbContext.Artworks.FirstOrDefaultAsync(a => a.ArtworkId == artworkId);
 
-            return await ArtworkDAO.Instance.GetArtwork(id);
+            return artwork;
         }
 
         public async Task<IEnumerable<Artwork>> GetArtworkPredicate(Expression<Func<Artwork, bool>> predicate)
-        {
-            return await ArtworkDAO.Instance.GetArtworks(predicate);
-        }
+            => await _dbContext.Artworks.Where(predicate).ToListAsync();
 
-        public async Task<IEnumerable<Artwork>> GetArtworksByArtistId(int artistId) => await ArtworkDAO.Instance.GetArtworksByArtistAsync(artistId);
+        public async Task<IEnumerable<Artwork>> GetArtworksByArtistId(int artistId)
+            => await _dbContext.Artworks.Where(a => a.ArtistID == artistId).ToListAsync();
 
-        public async Task<bool> IsExistArtwork(int id) => await ArtworkDAO.Instance.IsExistArtwork(id);
+        public async Task<bool> IsExistArtwork(int artworkId)
+            => await _dbContext.Artworks.AnyAsync(a => a.ArtworkId == artworkId);
 
         public async Task<Artwork?> UpdateArtwork(Artwork artwork)
         {
-            var isExist = await ArtworkDAO.Instance.IsExistArtwork(artwork.ArtworkId);
-            if (!isExist)
+            var artworkToUpdate = await _dbContext.Artworks
+                .FirstOrDefaultAsync(a => a.ArtworkId == artwork.ArtworkId);
+            if (artworkToUpdate is null)
             {
                 return null;
             }
 
-            var updateTo = await ArtworkDAO.Instance.UpdateArtWorkAsync(artwork.ArtworkId, artwork);
-
-            return updateTo;
+            artworkToUpdate.Name = artwork.Name;
+            artworkToUpdate.Description = artwork.Description;
+            artworkToUpdate.Image = artwork.Image;
+            artworkToUpdate.Price = artwork.Price;
+            artworkToUpdate.IsPublic = artwork.IsPublic;
+            artworkToUpdate.IsBuyAvailable = artwork.IsBuyAvailable;
+            await _dbContext.SaveChangesAsync();
+            return artworkToUpdate;
         }
 
         public async Task<PagedResult<Artwork>> GetArtworksPaging(int page, int pageSize, string q)
         {
-            return await ArtworkDAO.Instance.GetArtworksPaging(page, pageSize, q.Trim().ToUpper());
+            var artworks = await _dbContext.Artworks
+                .Where(artwork => artwork.Description.ToUpper().Contains(q)
+                || artwork.Name.ToUpper().Contains(q)
+                || artwork.Genre.Name.ToUpper().Contains(q))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var totalItem = await _dbContext.Artworks
+                .Where(artwork => artwork.Description.ToUpper().Contains(q)
+                || artwork.Name.ToUpper().Contains(q)
+                || artwork.Genre.Name.ToUpper().Contains(q))
+                .CountAsync();
+            decimal totalPages = (decimal)totalItem / pageSize;
+
+            return new PagedResult<Artwork>
+            {
+                Page = page,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Round(totalPages),
+                TotalItems = totalItem,
+                Items = artworks
+            };
         }
 
         public async Task<IEnumerable<int>> GetMembersRated(int artworkId)
-            => await ArtworkDAO.Instance.GetMembersRated(artworkId);
+        {
+            return await _dbContext.Ratings
+                .Where(r => r.ArtworkId == artworkId)
+                .Select(r => r.MemberId)
+                .ToListAsync();
+        }
     }
 }

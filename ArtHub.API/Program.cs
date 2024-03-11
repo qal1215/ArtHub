@@ -1,13 +1,20 @@
 ﻿using ArtHub.API.Dependencies;
+using ArtHub.BusinessObject;
 using ArtHub.DAO.Mapper;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.OData;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ArtHub2024DbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
 
 // Add services to the container.
 builder.Services.AddCors(options =>
@@ -21,12 +28,9 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod();
         });
 });
-builder.Services.AddControllers().AddOData(options => options.Select().Filter().OrderBy().Count().SetMaxTop(100).Expand().Filter());
-
+builder.Services.AddControllers();
 // Register dependencies
 builder.Services.RegisterDependencies();
-
-
 builder.Services.AddEndpointsApiExplorer();
 
 // Config AutoMapper
@@ -88,7 +92,6 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

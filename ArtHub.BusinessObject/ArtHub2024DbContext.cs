@@ -35,7 +35,11 @@ public partial class ArtHub2024DbContext : DbContext
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(GetConnectionString());
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseSqlServer(GetConnectionString());
+    }
+
 
 
     private string GetConnectionString()

@@ -1,28 +1,57 @@
 ﻿using ArtHub.BusinessObject;
 using ArtHub.Repository.Contracts;
-using SilverShopDAO;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArtHub.Repository
 {
     public class AccountRepository : IAccountRepository
     {
-        public async Task<List<Member>> GetBranchAccountsAsync() => await AccountDAO.Instance.GetBranchAccountsAsync();
+        private readonly ArtHub2024DbContext _dbContext;
 
-        public async Task AddBranchAccountAsync(Member branchAccount) => await AccountDAO.Instance.AddBranchAccountAsync(branchAccount);
+        public AccountRepository(ArtHub2024DbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
-        public async Task<Member?> GetBranchAccountAsync(string email) => await AccountDAO.Instance.GetBranchAccountAsync(email);
+        public async Task<List<Member>> GetBranchAccountsAsync()
+            => await _dbContext.Members.ToListAsync();
 
-        public async Task<Member?> LoginAsync(string email, string password) => await AccountDAO.Instance.GetBranchAccountAsync(email, password);
+        public async Task AddBranchAccountAsync(Member branchAccount)
+        {
+            await _dbContext.AddAsync(branchAccount);
+            await _dbContext.SaveChangesAsync();
+        }
 
-        public async Task<bool> IsExistedAccount(string email) => await AccountDAO.Instance.IsExistedAccount(email);
+        public async Task<Member?> GetBranchAccountAsync(string email)
+            => await _dbContext.Members.FirstOrDefaultAsync(m => m.EmailAddress!.Equals(email));
 
-        public async Task<bool> IsExistedAccount(int accountId) => await AccountDAO.Instance.IsExistedAccount(accountId);
+        public async Task<Member?> LoginAsync(string email, string password)
+            => await _dbContext.Members
+                .FirstOrDefaultAsync(m => m.EmailAddress!.Equals(email) && m.Password!.Equals(password));
 
-        public async Task<Member?> GetBranchAccountByIdAsync(int memberId) => await AccountDAO.Instance.GetBranchAccountByIdAsync(memberId);
+        public async Task<bool> IsExistedAccount(string email)
+        {
+            var result = await _dbContext.Members.AnyAsync(m => m.EmailAddress == email);
+            return result;
+        }
+
+        public async Task<bool> IsExistedAccount(int accountId)
+        {
+            var result = await _dbContext.Members.AnyAsync(a => a.AccountId == accountId);
+            return result;
+        }
+
+        public async Task<Member?> GetBranchAccountByIdAsync(int memberId)
+        {
+            var result = await _dbContext.Members.FirstOrDefaultAsync(m => m.AccountId == memberId);
+
+            return result;
+        }
 
         public async Task<Member?> UpdateAccountAsync(int accountId, Member updateAccount)
         {
-            var member = await AccountDAO.Instance.GetBranchAccountByIdAsync(accountId);
+            var member = await _dbContext.Members
+                .FirstOrDefaultAsync(m => m.AccountId == accountId);
 
             if (member is not null)
             {
@@ -46,19 +75,23 @@ namespace ArtHub.Repository
                     member.Role = updateAccount.Role;
                 }
 
-                await AccountDAO.Instance.SaveChangeAsync();
+                await _dbContext.SaveChangesAsync();
             }
             return member;
         }
 
         public async Task<decimal> GetBalanceByAccountId(int accountId)
-            => await AccountDAO.Instance.GetBranchAccountByIdAsync(accountId) is Member member ? member.Balance : -1;
+            => await _dbContext.Members.FirstOrDefaultAsync(a => a.AccountId == accountId)
+            is Member member
+            ? member.Balance
+            : -1;
 
-        public async Task UpdateBalanceByAccountId(int memberId, decimal updateAmount)
+        public async Task UpdateBalanceByAccountId(int accountId, decimal updateAmount)
         {
-            var member = await AccountDAO.Instance.GetBranchAccountByIdAsync(memberId);
+            var member = await _dbContext.Members
+                .FirstOrDefaultAsync(m => m.AccountId == accountId);
             member!.Balance = updateAmount;
-            await AccountDAO.Instance.SaveChangeAsync();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
