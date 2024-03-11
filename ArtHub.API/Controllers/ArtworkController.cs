@@ -3,7 +3,6 @@ using ArtHub.DAO.ModelResult;
 using ArtHub.Service.Contracts;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Query;
 
 namespace ArtHubAPI.Controllers
 {
@@ -21,7 +20,6 @@ namespace ArtHubAPI.Controllers
             _mapper = mapper;
         }
 
-        [EnableQuery]
         [HttpGet("{artworkId}")]
         public async Task<IActionResult> GetArtworkById([FromRoute] int artworkId)
         {

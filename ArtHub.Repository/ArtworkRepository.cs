@@ -59,5 +59,8 @@ namespace ArtHub.Repository
         {
             return await ArtworkDAO.Instance.GetArtworksPaging(page, pageSize, q.Trim().ToUpper());
         }
+
+        public async Task<IEnumerable<int>> GetMembersRated(int artworkId)
+            => await ArtworkDAO.Instance.GetMembersRated(artworkId);
     }
 }

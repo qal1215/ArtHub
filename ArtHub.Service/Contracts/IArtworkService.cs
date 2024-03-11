@@ -6,9 +6,9 @@ namespace ArtHub.Service.Contracts
 {
     public interface IArtworkService
     {
-        public Task<Artwork?> GetArtworkById(int id);
+        public Task<ViewArtwork?> GetArtworkById(int id);
 
-        public Task<IEnumerable<Artwork>> GetArtworksByArtistId(int artistId);
+        public Task<IEnumerable<ViewArtwork>> GetArtworksByArtistId(int artistId);
 
         public Task<IEnumerable<Artwork>> GetArtworksByTitle(string title);
 
@@ -18,6 +18,6 @@ namespace ArtHub.Service.Contracts
 
         public Task<bool> DeleteArtwork(int id);
 
-        public Task<PagedResult<Artwork>> GetArtworksPaging(QueryPaging queryPaging);
+        public Task<PagedResult<ViewArtwork>> GetArtworksPaging(QueryPaging queryPaging);
     }
 }
