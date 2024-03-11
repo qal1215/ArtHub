@@ -22,12 +22,15 @@ namespace ArtHub.Repository
 
         public async Task<List<Comment>> GetCommentsByPostId(int postId)
         {
-            return await _dbContext.Comments.Where(c => c.PostId == postId).ToListAsync();
+            return await _dbContext.Comments
+                .Where(c => c.PostId == postId)
+                .ToListAsync();
         }
 
         public async Task<Comment?> GetCommentAsync(int commentId)
         {
-            return await _dbContext.Comments.FirstOrDefaultAsync(c => c.CommentId == commentId);
+            return await _dbContext.Comments
+                .FirstOrDefaultAsync(c => c.CommentId == commentId);
         }
 
         public async Task DeleteCommentAsync(int commentId)

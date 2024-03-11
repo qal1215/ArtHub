@@ -1,4 +1,4 @@
-﻿namespace ArtHub.DAO.RatingDTO
+﻿namespace ArtHub.DTO.RatingDTO
 {
     public class PostRating
     {

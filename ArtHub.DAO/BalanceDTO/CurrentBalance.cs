@@ -1,4 +1,4 @@
-﻿namespace ArtHub.DAO.BalanceDTO
+﻿namespace ArtHub.DTO.BalanceDTO
 {
     public class CurrentBalance
     {

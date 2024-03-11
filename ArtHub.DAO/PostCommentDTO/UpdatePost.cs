@@ -1,4 +1,4 @@
-﻿namespace ArtHub.DAO.PostCommentDTO
+﻿namespace ArtHub.DTO.PostCommentDTO
 {
     public class UpdatePost
     {

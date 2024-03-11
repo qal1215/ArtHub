@@ -1,6 +1,6 @@
 ﻿using ArtHub.API.Helpers;
 using ArtHub.BusinessObject;
-using ArtHub.DAO.AccountDTO;
+using ArtHub.DTO.AccountDTO;
 using ArtHub.Service.Contracts;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;

@@ -1,5 +1,5 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.BalanceDTO;
+using ArtHub.DTO.BalanceDTO;
 using ArtHub.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
 

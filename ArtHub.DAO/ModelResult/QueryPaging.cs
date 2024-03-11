@@ -1,4 +1,4 @@
-﻿namespace ArtHub.DAO.ModelResult
+﻿namespace ArtHub.DTO.ModelResult
 {
     public class QueryPaging
     {

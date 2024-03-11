@@ -1,6 +1,6 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO.ModelResult;
-using ArtHub.DAO.PostCommentDTO;
+using ArtHub.DTO.ModelResult;
+using ArtHub.DTO.PostCommentDTO;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
 using ArtHub.Service.Helper;
@@ -49,19 +49,25 @@ namespace ArtHub.Service
             return await _postRepository.DeletePostAsync(postId);
         }
 
-        public async Task<Post?> GetPostAsync(int postId)
+        public async Task<ViewPost?> GetPostAsync(int postId)
         {
             var post = await _postRepository.GetPostAsyns(postId);
 
             if (post is null) return null;
 
-            post.Comments = await _commentRepository.GetCommentsByPostId(postId);
-            return post;
-        }
-
-        public Task<List<Post>?> GetPostsAsync()
-        {
-            throw new NotImplementedException();
+            var viewPost = _mapper.Map<ViewPost>(post);
+            var comments = await _commentRepository.GetCommentsByPostId(postId);
+            viewPost.Comments = _mapper.Map<List<ViewComment>>(comments);
+            foreach (var comment in viewPost.Comments)
+            {
+                var member = await _accountRepository.GetBranchAccountByIdAsync(comment.MemberId);
+                if (member is not null)
+                {
+                    comment.MemberName = member.FullName;
+                    comment.MemberAvatar = member.Avatar;
+                }
+            }
+            return viewPost;
         }
 
         public async Task<Post?> UpdatePostAsync(int postId, UpdatePost updatePost)
@@ -80,11 +86,64 @@ namespace ArtHub.Service
             => await _postRepository.IsExisted(postId);
 
 
-        public async Task<PagedResult<Post>> GetPostByUserId(int userId, QueryPaging queryPaging)
-            => await _postRepository.GetPostsByArtistIdAsync(userId, queryPaging.CheckQueryPaging());
+        public async Task<PagedResult<ViewPost>> GetPostByUserId(int userId, QueryPaging queryPaging)
+        {
+            var pagedPost = await _postRepository.GetPostsByArtistIdAsync(userId, queryPaging.CheckQueryPaging());
+            var viewPosts = _mapper.Map<List<ViewPost>>(pagedPost.Items);
+            foreach (var viewPost in viewPosts)
+            {
+                var comments = await _commentRepository.GetCommentsByPostId(viewPost.PostId);
+                viewPost.Comments = _mapper.Map<List<ViewComment>>(comments);
+                foreach (var comment in viewPost.Comments)
+                {
+                    var member = await _accountRepository.GetBranchAccountByIdAsync(comment.MemberId);
+                    if (member is not null)
+                    {
+                        comment.MemberName = member.FullName;
+                        comment.MemberAvatar = member.Avatar;
+                    }
+                }
+            }
+
+            return new PagedResult<ViewPost>
+            {
+                Items = viewPosts,
+                TotalItems = pagedPost.TotalItems,
+                TotalPages = pagedPost.TotalPages
+            };
+        }
 
 
-        public async Task<PagedResult<Post>> GetPostByArtworkId(int artworkId, QueryPaging queryPaging)
-            => await _postRepository.GetPostsByArtworkIdAsync(artworkId, queryPaging.CheckQueryPaging());
+        public async Task<PagedResult<ViewPost>> GetPostByArtworkId(int artworkId, QueryPaging queryPaging)
+        {
+            var pagedPost = await _postRepository.GetPostsByArtworkIdAsync(artworkId, queryPaging.CheckQueryPaging());
+            var viewPosts = _mapper.Map<List<ViewPost>>(pagedPost.Items);
+
+            foreach (var viewPost in viewPosts)
+            {
+                var comments = await _commentRepository.GetCommentsByPostId(viewPost.PostId);
+                viewPost.Comments = _mapper.Map<List<ViewComment>>(comments);
+                foreach (var comment in viewPost.Comments)
+                {
+                    var member = await _accountRepository.GetBranchAccountByIdAsync(comment.MemberId);
+                    if (member is not null)
+                    {
+                        comment.MemberName = member.FullName;
+                        comment.MemberAvatar = member.Avatar;
+                    }
+                }
+            }
+            return new PagedResult<ViewPost>
+            {
+                Items = viewPosts,
+                TotalItems = pagedPost.TotalItems,
+                TotalPages = pagedPost.TotalPages
+            };
+        }
+
+        public Task<List<ViewPost>?> GetListPostAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using ArtHub.DAO.BalanceDTO;
+﻿using ArtHub.DTO.BalanceDTO;
 using ArtHub.Service.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
