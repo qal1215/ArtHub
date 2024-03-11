@@ -14,4 +14,8 @@
   <ItemGroup>
     <ProjectReference Include="..\ArtHub.BusinessObject\ArtHub.BusinessObject.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="GenreDTO\" />
+  </ItemGroup>
 </Project>

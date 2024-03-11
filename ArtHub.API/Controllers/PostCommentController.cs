@@ -128,9 +128,9 @@ namespace ArtHub.API.Controllers
         }
 
         [HttpGet("/post/artwork/{artworkId}")]
-        public async Task<IActionResult> GetPostByArtworkId([FromRoute] int userId, [FromQuery] QueryPaging queryPaging)
+        public async Task<IActionResult> GetPostByArtworkId([FromRoute] int artworkId, [FromQuery] QueryPaging queryPaging)
         {
-            var result = await _postService.GetPostByUserId(userId, queryPaging);
+            var result = await _postService.GetPostByArtworkId(artworkId, queryPaging);
 
             if (result.TotalItems <= 0)
             {

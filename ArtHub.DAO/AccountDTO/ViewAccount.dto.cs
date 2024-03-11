@@ -1,4 +1,5 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.DAO.ArtworkDTO;
 
 namespace ArtHub.DAO.AccountDTO
 {
@@ -14,6 +15,6 @@ namespace ArtHub.DAO.AccountDTO
 
         public Role? Role { get; set; }
 
-        public virtual ICollection<Artwork> Artworks { get; set; } = new HashSet<Artwork>();
+        public IEnumerable<ViewArtwork> ViewArtworks { get; set; } = new List<ViewArtwork>();
     }
 }

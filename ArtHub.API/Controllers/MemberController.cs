@@ -30,7 +30,7 @@ namespace ArtHub.API.Controllers
             }
             var memberArtworks = await _artworkService.GetArtworksByArtistId(id);
 
-            member.Artworks = memberArtworks.ToArray();
+            member.ViewArtworks = memberArtworks;
             return Ok(member);
         }
 

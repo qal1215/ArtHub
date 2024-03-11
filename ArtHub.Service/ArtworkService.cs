@@ -3,6 +3,7 @@ using ArtHub.DAO.ArtworkDTO;
 using ArtHub.DAO.ModelResult;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
+using ArtHub.Service.Helper;
 using AutoMapper;
 
 namespace ArtHub.Service
@@ -44,14 +45,26 @@ namespace ArtHub.Service
             return await _artworkRepository.DeleteArtwork(id);
         }
 
-        public async Task<Artwork?> GetArtworkById(int id)
+        public async Task<ViewArtwork?> GetArtworkById(int id)
         {
-            return await _artworkRepository.GetArtwork(id);
+            var artwork = await _artworkRepository.GetArtwork(id);
+            if (artwork is null) return null;
+
+            var viewArtwork = _mapper.Map<ViewArtwork>(artwork);
+            viewArtwork.MembersRated = await _artworkRepository.GetMembersRated(id);
+            return viewArtwork;
         }
 
-        public async Task<IEnumerable<Artwork>> GetArtworksByArtistId(int artistId)
+        public async Task<IEnumerable<ViewArtwork>> GetArtworksByArtistId(int artistId)
         {
-            return await _artworkRepository.GetArtworksByArtistId(artistId);
+            var artworks = await _artworkRepository.GetArtworksByArtistId(artistId);
+            var viewArtworks = _mapper.Map<List<ViewArtwork>>(artworks);
+            foreach (ViewArtwork v in viewArtworks)
+            {
+                v.MembersRated = await _artworkRepository.GetMembersRated(v.ArtworkId);
+            }
+
+            return viewArtworks;
         }
 
         public async Task<IEnumerable<Artwork>> GetArtworksByTitle(string title)
@@ -76,12 +89,24 @@ namespace ArtHub.Service
             return await _artworkRepository.UpdateArtwork(artwork);
         }
 
-        public async Task<PagedResult<Artwork>> GetArtworksPaging(QueryPaging queryPaging)
+        public async Task<PagedResult<ViewArtwork>> GetArtworksPaging(QueryPaging queryPaging)
         {
-            queryPaging.Page = queryPaging.Page > 0 ? queryPaging.Page : 1;
-            queryPaging.PageSize = queryPaging.PageSize > 0 ? queryPaging.PageSize : 10;
-            queryPaging.Query = queryPaging.Query ?? string.Empty;
-            return await _artworkRepository.GetArtworksPaging(queryPaging.Page, queryPaging.PageSize, queryPaging.Query);
+            queryPaging = queryPaging.CheckQueryPaging();
+            var paged = await _artworkRepository.GetArtworksPaging(queryPaging.Page, queryPaging.PageSize, queryPaging.Query);
+            var items = _mapper.Map<List<ViewArtwork>>(paged.Items);
+            foreach (ViewArtwork artwork in items)
+            {
+                artwork.MembersRated = await _artworkRepository.GetMembersRated(artwork.ArtworkId);
+            }
+
+            return new PagedResult<ViewArtwork>
+            {
+                Page = paged.Page,
+                PageSize = paged.PageSize,
+                TotalItems = paged.TotalItems,
+                TotalPages = paged.TotalPages,
+                Items = items
+            };
         }
     }
 }

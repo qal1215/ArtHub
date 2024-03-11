@@ -1,34 +1,53 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.DAO;
 using ArtHub.Repository.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArtHub.Repository
 {
     public class RatingRepository : IRatingRepository
     {
+        private readonly ArtHub2024DbContext _dbContext;
+
+        public RatingRepository(ArtHub2024DbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public async Task<bool> AddRatingForArtwork(Rating rating)
         {
-            return await RatingDAO.Instance.AddRating(rating);
+            await _dbContext.Ratings.AddAsync(rating);
+            var result = await _dbContext.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<bool> UnRatingArtwork(Rating rating)
         {
-            return await RatingDAO.Instance.Unrating(rating);
+            _dbContext.Ratings.Remove(rating);
+            var result = await _dbContext.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<bool> UpdateRatingForArtwork(Rating rating)
         {
-            return await RatingDAO.Instance.UpdateRating(rating);
+            _dbContext.Ratings.Update(rating);
+            var result = await _dbContext.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<Rating?> GetRatingByArtworkIdNUserId(int artworkId, int userId)
         {
-            return await RatingDAO.Instance.GetRatingByArtworkIdNUserId(artworkId, userId);
+            var result = await _dbContext.Ratings
+                          .Where(r => r.ArtworkId == artworkId && r.MemberId == userId)
+                          .FirstOrDefaultAsync();
+            return result;
         }
 
         public async Task<List<Rating>> GetRatingsByArtworkId(int artworkId)
         {
-            return await RatingDAO.Instance.GetRatingsByArtworkId(artworkId);
+            var result = await _dbContext.Ratings
+                           .Where(r => r.ArtworkId == artworkId)
+                           .ToListAsync();
+            return result;
         }
     }
 }

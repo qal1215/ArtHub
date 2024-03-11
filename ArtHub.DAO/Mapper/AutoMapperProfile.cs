@@ -30,6 +30,8 @@ namespace ArtHub.DAO.Mapper
             CreateMap<PostRating, Rating>()
                 .ForMember(dest => dest.MemberId, opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dest => dest.Rate, opt => opt.MapFrom(src => src.Rating));
+
+            CreateMap<Artwork, ViewArtwork>();
         }
     }
 }

@@ -3,6 +3,7 @@ using ArtHub.DAO.ModelResult;
 using ArtHub.DAO.PostCommentDTO;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
+using ArtHub.Service.Helper;
 using AutoMapper;
 
 namespace ArtHub.Service
@@ -12,15 +13,33 @@ namespace ArtHub.Service
         private readonly IMapper _mapper;
         private readonly IPostRepository _postRepository;
         private readonly ICommentRepository _commentRepository;
+        private readonly IAccountRepository _accountRepository;
+        private readonly IArtworkRepository _artworkRepository;
 
-        public PostService(IMapper mapper, IPostRepository postRepository, ICommentRepository commentRepository)
+        public PostService(IMapper mapper, IAccountRepository accountRepository,
+            IPostRepository postRepository, ICommentRepository commentRepository,
+            IArtworkRepository artworkRepository)
         {
             _mapper = mapper;
             _postRepository = postRepository;
             _commentRepository = commentRepository;
+            _accountRepository = accountRepository;
+            _artworkRepository = artworkRepository;
         }
         public async Task<Post> AddPostAsync(CreatePost post)
         {
+            var user = await _accountRepository.IsExistedAccount(post.MemberId);
+            if (!user)
+            {
+                throw new Exception("User not found");
+            }
+
+            var artwork = await _artworkRepository.IsExistArtwork(post.ArtworkId);
+            if (!artwork)
+            {
+                throw new Exception("Artwork not found");
+            }
+
             Post creating = _mapper.Map<Post>(post);
             return await _postRepository.AddPostAsync(creating);
         }
@@ -58,13 +77,14 @@ namespace ArtHub.Service
         }
 
         public async Task<bool> IsExisted(int postId)
-        {
-            return await _postRepository.IsExisted(postId);
-        }
+            => await _postRepository.IsExisted(postId);
+
 
         public async Task<PagedResult<Post>> GetPostByUserId(int userId, QueryPaging queryPaging)
-        {
-            return await _postRepository.GetPostsByArtistIdAsync(userId, queryPaging);
-        }
+            => await _postRepository.GetPostsByArtistIdAsync(userId, queryPaging.CheckQueryPaging());
+
+
+        public async Task<PagedResult<Post>> GetPostByArtworkId(int artworkId, QueryPaging queryPaging)
+            => await _postRepository.GetPostsByArtworkIdAsync(artworkId, queryPaging.CheckQueryPaging());
     }
 }
