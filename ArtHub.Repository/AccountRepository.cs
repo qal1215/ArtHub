@@ -93,6 +93,19 @@ namespace ArtHub.Repository
             member!.Balance = updateAmount;
             await _dbContext.SaveChangesAsync();
         }
+
+        // Add sell amount to current amount
+        public async Task UpdateBalanceAccountForSell(int artworkId, decimal sellAmount)
+        {
+            var member = await _dbContext.Artworks
+                .Where(a => a.ArtworkId == artworkId)
+                .Select(artwork => artwork.Artist)
+                .FirstOrDefaultAsync();
+
+            if (member is null) throw new Exception("Not found artist memeber!");
+            member!.Balance = member!.Balance + sellAmount;
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
 

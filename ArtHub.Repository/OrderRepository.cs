@@ -13,6 +13,13 @@ namespace ArtHub.Repository
             _dbContext = dbContext;
         }
 
+        public async Task<bool> MemberHasBuyArtwork(int artworkId, int buyerId)
+        {
+            var hasBuyArtwork = await _dbContext.OrderDetails
+                .AnyAsync(od => od.ArtworkId == artworkId && od.Order.BuyerId == buyerId);
+            return hasBuyArtwork;
+        }
+
         public async Task<Order> CreateOrderAsync(Order order)
         {
             await _dbContext.Orders.AddAsync(order);

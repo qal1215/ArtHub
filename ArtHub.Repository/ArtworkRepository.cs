@@ -15,6 +15,14 @@ namespace ArtHub.Repository
             _dbContext = dbContext;
         }
 
+        public async Task<decimal> GetTotalPriceByArtworkIds(int[] artworkIds)
+        {
+            var totalAmount = await _dbContext.Artworks
+                .Where(artwork => artworkIds.Contains(artwork.ArtworkId))
+                .SumAsync(artwork => artwork.Price);
+            return totalAmount;
+        }
+
         public async Task<Artwork> CreateArtwork(Artwork artwork)
         {
             await _dbContext.AddAsync(artwork);

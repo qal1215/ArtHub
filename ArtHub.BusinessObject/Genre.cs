@@ -11,6 +11,6 @@ namespace ArtHub.BusinessObject
 
         public string Name { get; set; } = null!;
 
-        public IEnumerable<Artwork>? Artwork { get; set; }
+        public virtual IEnumerable<Artwork> Artwork { get; set; } = new List<Artwork>();
     }
 }

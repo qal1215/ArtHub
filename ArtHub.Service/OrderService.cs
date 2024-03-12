@@ -10,15 +10,35 @@ namespace ArtHub.Service
     {
         private readonly IMapper _mapper;
         private readonly IOrderRepository _orderRepository;
+        private readonly IAccountRepository _accountRepository;
+        private readonly IArtworkRepository _artworkRepository;
 
-        public OrderService(IMapper mapper, IOrderRepository orderRepository)
+        public OrderService(IMapper mapper, IOrderRepository orderRepository, IAccountRepository accountRepository, IArtworkRepository artworkRepository)
         {
             _mapper = mapper;
             _orderRepository = orderRepository;
+            _accountRepository = accountRepository;
+            _artworkRepository = artworkRepository;
         }
 
         public async Task<ViewOrder> CreateOrder(CreateOrder order)
         {
+            var totalAmount = await _artworkRepository
+                .GetTotalPriceByArtworkIds(order.OrderDetails.Select(od => od.ArtworkId).ToArray());
+
+            if (totalAmount != order.TotalAmount) throw new Exception("Total amount is not correct");
+
+            var userBalance = await _accountRepository.GetBalanceByAccountId(order.BuyerId);
+
+            if (userBalance < totalAmount) throw new Exception("Not enough balance");
+
+            foreach (var artwork in order.OrderDetails)
+            {
+                var hasBuyArtwork = await _orderRepository.MemberHasBuyArtwork(artwork.ArtworkId, order.BuyerId);
+                if (hasBuyArtwork)
+                    throw new Exception("You have already bought artwork has id: " + artwork.ArtworkId);
+            }
+
             var orderDetails = _mapper.Map<List<OrderDetail>>(order.OrderDetails);
             var creating = new Order
             {
@@ -30,6 +50,13 @@ namespace ArtHub.Service
             };
 
             var result = await _orderRepository.CreateOrderAsync(creating);
+            foreach (var od in result.OrderDetails)
+            {
+                await _accountRepository.UpdateBalanceAccountForSell(od.ArtworkId, od.UnitPrice);
+            }
+
+            var amountAfterBuy = userBalance - totalAmount;
+            await _accountRepository.UpdateBalanceByAccountId(order.BuyerId, amountAfterBuy);
             return _mapper.Map<ViewOrder>(result);
         }
 
