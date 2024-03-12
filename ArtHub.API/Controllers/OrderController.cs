@@ -31,5 +31,12 @@ namespace ArtHub.API.Controllers
 
             return Ok(order);
         }
+
+        [HttpGet("buyer/{buyerId}")]
+        public async Task<IActionResult> GetOrdersByBuyerId([FromRoute] int buyerId)
+        {
+            var orders = await _orderService.GetOrdersByMemberId(buyerId);
+            return Ok(orders);
+        }
     }
 }

@@ -35,6 +35,27 @@ namespace ArtHub.Repository
             return historyTransaction;
         }
 
+        public async Task<HistoryTransaction?> SellAmountToAccount(TransactionAmount depositAmount, decimal currentBalance, int artworkId)
+        {
+            HistoryTransaction historyTransaction = new()
+            {
+                AccountId = depositAmount.AccountId,
+                ArtId = artworkId,
+                BeforeTransactionBalance = currentBalance,
+                AfterTransactionBalance = currentBalance + depositAmount.Amount,
+                TransactionAmount = depositAmount.Amount,
+                TransactionDate = DateTime.Now,
+                TransactionType = TransactionType.Sell
+            };
+
+            await _dbContext.AddAsync(historyTransaction);
+            var result = await _dbContext.SaveChangesAsync();
+            if (result <= 0)
+                return null;
+
+            return historyTransaction;
+        }
+
         public async Task<List<HistoryTransaction>> GetHistoryTransactionsByAccountId(int accountId,
             TransactionType? type = null,
             DateTime? fromDate = null,
@@ -67,6 +88,30 @@ namespace ArtHub.Repository
                 TransactionAmount = withdrawAmount.Amount,
                 TransactionDate = DateTime.Now,
                 TransactionType = TransactionType.Withdraw
+            };
+
+            await _dbContext.AddAsync(historyTransaction);
+            var result = await _dbContext.SaveChangesAsync();
+
+            if (result <= 0)
+            {
+                return null;
+            }
+
+            return historyTransaction;
+        }
+
+        public async Task<HistoryTransaction?> PurchaseAmount(TransactionAmount withdrawAmount, decimal currentBalance, int artworkId)
+        {
+            HistoryTransaction historyTransaction = new()
+            {
+                AccountId = withdrawAmount.AccountId,
+                ArtId = artworkId,
+                BeforeTransactionBalance = currentBalance,
+                AfterTransactionBalance = currentBalance - withdrawAmount.Amount,
+                TransactionAmount = withdrawAmount.Amount,
+                TransactionDate = DateTime.Now,
+                TransactionType = TransactionType.Purchase
             };
 
             await _dbContext.AddAsync(historyTransaction);

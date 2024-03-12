@@ -23,5 +23,6 @@ public enum TransactionType
 {
     Deposit = 1,//Nap
     Withdraw = 2,//Rut
-    Purchase = 3//Mua
+    Purchase = 3,//Mua
+    Sell = 4,//Ban
 }

@@ -63,5 +63,13 @@ namespace ArtHub.Repository
         }
 
         public async Task SaveChangeAsync() => await _dbContext.SaveChangesAsync();
+
+        public async Task<IEnumerable<Order>> GetOrdersByBuyerIdAsync(int memberId)
+        {
+            return await _dbContext.Orders
+                .Include(o => o.OrderDetails)
+                .Where(o => o.BuyerId == memberId)
+                .ToListAsync();
+        }
     }
 }

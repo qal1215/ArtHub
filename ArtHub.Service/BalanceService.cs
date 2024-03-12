@@ -55,9 +55,29 @@ namespace ArtHub.Service
             return transaction;
         }
 
-        public Task<HistoryTransaction> PurchaseArtworkAsync(int accountId, int artworkId, decimal amount)
+        public async Task<HistoryTransaction?> PurchaseArtworkAsync(TransactionAmount purchaseAmount, int artworkId)
         {
-            throw new NotImplementedException();
+            var currentBalance = await _accountRepository.GetBalanceByAccountId(purchaseAmount.AccountId);
+            if (currentBalance < 0 || currentBalance < purchaseAmount.Amount) return null;
+
+            var transaction = await _transactionHistoryRepository.PurchaseAmount(purchaseAmount, currentBalance, artworkId);
+            if (transaction is null) return null;
+
+            await _accountRepository.UpdateBalanceByAccountId(purchaseAmount.AccountId, transaction.AfterTransactionBalance);
+
+            return transaction;
+        }
+
+        public async Task<HistoryTransaction?> SellBalanceAsync(TransactionAmount depositAmount, int artworkId)
+        {
+            var currentBalance = await _accountRepository.GetBalanceByAccountId(depositAmount.AccountId);
+            if (currentBalance < 0 || depositAmount.Amount < 0) return null;
+
+            var transaction = await _transactionHistoryRepository.SellAmountToAccount(depositAmount, currentBalance, artworkId);
+            if (transaction is null) return null;
+            await _accountRepository.UpdateBalanceByAccountId(depositAmount.AccountId, transaction.AfterTransactionBalance);
+
+            return transaction;
         }
 
         public async Task<CurrentBalance?> GetBalanceByAccountId(int accountId)

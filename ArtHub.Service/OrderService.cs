@@ -1,4 +1,5 @@
 ﻿using ArtHub.BusinessObject;
+using ArtHub.DTO.BalanceDTO;
 using ArtHub.DTO.OrderDTO;
 using ArtHub.Repository.Contracts;
 using ArtHub.Service.Contracts;
@@ -12,13 +13,15 @@ namespace ArtHub.Service
         private readonly IOrderRepository _orderRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly IArtworkRepository _artworkRepository;
+        private readonly IBalanceService _balanceService;
 
-        public OrderService(IMapper mapper, IOrderRepository orderRepository, IAccountRepository accountRepository, IArtworkRepository artworkRepository)
+        public OrderService(IMapper mapper, IOrderRepository orderRepository, IAccountRepository accountRepository, IArtworkRepository artworkRepository, IBalanceService balanceService)
         {
             _mapper = mapper;
             _orderRepository = orderRepository;
             _accountRepository = accountRepository;
             _artworkRepository = artworkRepository;
+            _balanceService = balanceService;
         }
 
         public async Task<ViewOrder> CreateOrder(CreateOrder order)
@@ -37,6 +40,10 @@ namespace ArtHub.Service
                 var hasBuyArtwork = await _orderRepository.MemberHasBuyArtwork(artwork.ArtworkId, order.BuyerId);
                 if (hasBuyArtwork)
                     throw new Exception("You have already bought artwork has id: " + artwork.ArtworkId);
+
+                var isBuyable = await _artworkRepository.IsBuyAvailable(artwork.ArtworkId);
+                if (!isBuyable)
+                    throw new Exception("Artwork has id: " + artwork.ArtworkId + " is not available for sell");
             }
 
             var orderDetails = _mapper.Map<List<OrderDetail>>(order.OrderDetails);
@@ -52,11 +59,22 @@ namespace ArtHub.Service
             var result = await _orderRepository.CreateOrderAsync(creating);
             foreach (var od in result.OrderDetails)
             {
-                await _accountRepository.UpdateBalanceAccountForSell(od.ArtworkId, od.UnitPrice);
+                var artistId = await _artworkRepository.GetArtistIdByArtworkId(od.ArtworkId);
+                var transactionAmount = new TransactionAmount
+                {
+                    AccountId = artistId,
+                    Amount = od.UnitPrice
+                };
+                await _balanceService.SellBalanceAsync(transactionAmount, od.ArtworkId);
+
+                var purchaseAmount = new TransactionAmount
+                {
+                    AccountId = order.BuyerId,
+                    Amount = od.UnitPrice
+                };
+                await _balanceService.PurchaseArtworkAsync(purchaseAmount, od.ArtworkId);
             }
 
-            var amountAfterBuy = userBalance - totalAmount;
-            await _accountRepository.UpdateBalanceByAccountId(order.BuyerId, amountAfterBuy);
             return _mapper.Map<ViewOrder>(result);
         }
 
@@ -68,9 +86,10 @@ namespace ArtHub.Service
             return _mapper.Map<ViewOrder>(result);
         }
 
-        public Task<IEnumerable<Order>> GetOrderByMemberId(int id)
+        public async Task<IEnumerable<ViewOrder>> GetOrdersByMemberId(int id)
         {
-            throw new NotImplementedException();
+            var result = await _orderRepository.GetOrdersByBuyerIdAsync(id);
+            return _mapper.Map<IEnumerable<ViewOrder>>(result);
         }
     }
 }

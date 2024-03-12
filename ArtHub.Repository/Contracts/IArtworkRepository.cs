@@ -23,6 +23,9 @@ namespace ArtHub.Repository.Contracts
         public Task<PagedResult<Artwork>> GetArtworksPaging(int page, int pageSize, string q);
 
         public Task<IEnumerable<int>> GetMembersRated(int artworkId);
+
         Task<decimal> GetTotalPriceByArtworkIds(int[] artworkIds);
+        Task<bool> IsBuyAvailable(int artworkId);
+        Task<int> GetArtistIdByArtworkId(int artworkId);
     }
 }
