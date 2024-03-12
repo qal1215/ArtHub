@@ -15,6 +15,21 @@ namespace ArtHub.Repository
             _dbContext = dbContext;
         }
 
+        public async Task<bool> IsBuyAvailable(int artworkId)
+        {
+            var isBuyAvailable = await _dbContext.Artworks
+                .AnyAsync(a => a.ArtworkId == artworkId && a.IsBuyAvailable && a.IsPublic);
+            return isBuyAvailable;
+        }
+
+        public async Task<decimal> GetTotalPriceByArtworkIds(int[] artworkIds)
+        {
+            var totalAmount = await _dbContext.Artworks
+                .Where(artwork => artworkIds.Contains(artwork.ArtworkId))
+                .SumAsync(artwork => artwork.Price);
+            return totalAmount;
+        }
+
         public async Task<Artwork> CreateArtwork(Artwork artwork)
         {
             await _dbContext.AddAsync(artwork);
@@ -103,6 +118,14 @@ namespace ArtHub.Repository
                 .Where(r => r.ArtworkId == artworkId)
                 .Select(r => r.MemberId)
                 .ToListAsync();
+        }
+
+        public async Task<int> GetArtistIdByArtworkId(int artworkId)
+        {
+            return await _dbContext.Artworks
+                .Where(a => a.ArtworkId == artworkId)
+                .Select(a => a.ArtistID)
+                .FirstOrDefaultAsync();
         }
     }
 }

@@ -13,8 +13,8 @@ namespace ArtHub.Service.Contracts
 
         Task<HistoryTransaction?> WithdrawBalanceAsync(TransactionAmount withdrawAmount);
 
-        Task<HistoryTransaction> PurchaseArtworkAsync(int accountId, int artworkId, decimal amount);
-
         Task<CurrentBalance?> GetBalanceByAccountId(int accountId);
+        Task<HistoryTransaction?> SellBalanceAsync(TransactionAmount depositAmount, int artworkId);
+        Task<HistoryTransaction?> PurchaseArtworkAsync(TransactionAmount purchaseAmount, int artworkId);
     }
 }

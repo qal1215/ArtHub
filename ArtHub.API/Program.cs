@@ -15,6 +15,9 @@ builder.Services.AddDbContext<ArtHub2024DbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// Register dependencies
+builder.Services.RegisterDependencies();
+
 
 // Add services to the container.
 builder.Services.AddCors(options =>
@@ -29,8 +32,6 @@ builder.Services.AddCors(options =>
         });
 });
 builder.Services.AddControllers();
-// Register dependencies
-builder.Services.RegisterDependencies();
 builder.Services.AddEndpointsApiExplorer();
 
 // Config AutoMapper
@@ -56,7 +57,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
 
     });
-
 
 builder.Services.AddSwaggerGen(option =>
 {

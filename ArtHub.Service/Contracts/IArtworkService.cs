@@ -14,7 +14,7 @@ namespace ArtHub.Service.Contracts
 
         public Task<Artwork?> UpdateArtwork(UpdateArtwork artwork);
 
-        public Task<Artwork> CreateArtwork(CreateArtwork artwork);
+        public Task<ViewArtwork> CreateArtwork(CreateArtwork artwork);
 
         public Task<bool> DeleteArtwork(int id);
 

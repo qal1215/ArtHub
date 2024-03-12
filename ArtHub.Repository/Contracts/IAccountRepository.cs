@@ -23,6 +23,8 @@ namespace ArtHub.Repository.Contracts
         public Task<decimal> GetBalanceByAccountId(int memberId);
 
         public Task UpdateBalanceByAccountId(int memberId, decimal updateAmount);
+
+        Task UpdateBalanceAccountForSell(int artworkId, decimal sellAmount);
     }
 }
 

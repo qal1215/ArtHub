@@ -21,7 +21,7 @@ namespace ArtHub.Service
             _mapper = mapper;
         }
 
-        public async Task<Artwork> CreateArtwork(CreateArtwork creating)
+        public async Task<ViewArtwork> CreateArtwork(CreateArtwork creating)
         {
             var genre = await _genreRepository.SearchGenreByName(creating.GenreName);
             if (genre is null)
@@ -32,7 +32,12 @@ namespace ArtHub.Service
             artwork.ArtworkDate = DateTime.Now;
             artwork.ArtworkRating = 0;
             artwork.GenreId = genre.GenreId;
-            return await _artworkRepository.CreateArtwork(artwork);
+            var result = await _artworkRepository.CreateArtwork(artwork);
+
+            var viewArtwork = _mapper.Map<ViewArtwork>(result);
+            viewArtwork.GenreName = result.Genre.Name;
+
+            return viewArtwork;
         }
 
         public async Task<bool> DeleteArtwork(int id)

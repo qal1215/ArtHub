@@ -2,6 +2,7 @@
 using ArtHub.DTO.AccountDTO;
 using ArtHub.DTO.ArtworkDTO;
 using ArtHub.DTO.BalanceDTO;
+using ArtHub.DTO.OrderDTO;
 using ArtHub.DTO.PostCommentDTO;
 using ArtHub.DTO.RatingDTO;
 using AutoMapper;
@@ -34,6 +35,11 @@ namespace ArtHub.DTO.Mapper
             CreateMap<Artwork, ViewArtwork>();
             CreateMap<Post, ViewPost>();
             CreateMap<Comment, ViewComment>();
+
+            CreateMap<CreateOrder, Order>();
+            CreateMap<CreateOrderDetail, OrderDetail>();
+            CreateMap<Order, ViewOrder>();
+            CreateMap<OrderDetail, ViewOrderDetail>();
         }
     }
 }

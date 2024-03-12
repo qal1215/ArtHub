@@ -4,6 +4,7 @@ using ArtHub.BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtHub.BusinessObject.Migrations
 {
     [DbContext(typeof(ArtHub2024DbContext))]
-    partial class ArtHub2024DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240312125402_Update_Order_OrderDetail")]
+    partial class Update_Order_OrderDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,11 +216,11 @@ namespace ArtHub.BusinessObject.Migrations
 
             modelBuilder.Entity("ArtHub.BusinessObject.Order", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BuyerId")
                         .HasColumnType("int");
@@ -231,7 +234,7 @@ namespace ArtHub.BusinessObject.Migrations
                     b.Property<int>("TotalQuantity")
                         .HasColumnType("int");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BuyerId");
 
@@ -240,12 +243,6 @@ namespace ArtHub.BusinessObject.Migrations
 
             modelBuilder.Entity("ArtHub.BusinessObject.OrderDetail", b =>
                 {
-                    b.Property<int>("OrderDetailId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailId"));
-
                     b.Property<int>("ArtworkId")
                         .HasColumnType("int");
 
@@ -254,8 +251,6 @@ namespace ArtHub.BusinessObject.Migrations
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("OrderDetailId");
 
                     b.HasIndex("ArtworkId");
 
@@ -405,7 +400,7 @@ namespace ArtHub.BusinessObject.Migrations
                         .IsRequired();
 
                     b.HasOne("ArtHub.BusinessObject.Order", "Order")
-                        .WithMany("OrderDetails")
+                        .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -461,11 +456,6 @@ namespace ArtHub.BusinessObject.Migrations
                     b.Navigation("Artworks");
 
                     b.Navigation("HistoryTransactions");
-                });
-
-            modelBuilder.Entity("ArtHub.BusinessObject.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("ArtHub.BusinessObject.Post", b =>

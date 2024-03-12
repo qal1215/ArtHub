@@ -55,8 +55,6 @@ public partial class ArtHub2024DbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         OnModelCreatingPartial(modelBuilder);
-        modelBuilder.Entity<OrderDetail>()
-            .HasNoKey();
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

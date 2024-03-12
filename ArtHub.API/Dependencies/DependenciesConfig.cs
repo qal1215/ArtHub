@@ -10,8 +10,7 @@ namespace ArtHub.API.Dependencies
     {
         public static void RegisterDependencies(this IServiceCollection services)
         {
-            services.AddScoped<ArtHub2024DbContext, ArtHub2024DbContext>();
-
+            services.AddScoped<ArtHub2024DbContext>();
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IArtworkService, ArtworkService>();
@@ -20,6 +19,7 @@ namespace ArtHub.API.Dependencies
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IRatingService, RatingService>();
             services.AddScoped<IGenreService, GenreService>();
+            services.AddScoped<IOrderService, OrderService>();
 
 
             services.AddScoped<IAccountRepository, AccountRepository>();
@@ -29,6 +29,7 @@ namespace ArtHub.API.Dependencies
             services.AddScoped<IRatingRepository, RatingRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IGenreRepository, GenreRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
         }
     }
 }
