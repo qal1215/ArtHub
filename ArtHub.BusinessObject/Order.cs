@@ -19,7 +19,6 @@ namespace ArtHub.BusinessObject
 
         public int TotalQuantity { get; set; }
 
-        [NotMapped]
         public virtual IEnumerable<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

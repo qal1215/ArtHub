@@ -37,7 +37,7 @@ namespace ArtHub.Service
         {
             var result = await _orderRepository.GetOrderByIdAsync(id);
             if (result is null) return null;
-            result.OrderDetails = await _orderRepository.GetOrderDetailsByOrderIdAsync(id);
+            //result.OrderDetails = await _orderRepository.GetOrderDetailsByOrderIdAsync(id);
             return _mapper.Map<ViewOrder>(result);
         }
 

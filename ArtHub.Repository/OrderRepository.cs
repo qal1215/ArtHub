@@ -34,6 +34,7 @@ namespace ArtHub.Repository
         public async Task<Order?> GetOrderByIdAsync(int orderId)
         {
             return await _dbContext.Orders
+                .Include(o => o.OrderDetails)
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
         }
 
