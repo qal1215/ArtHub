@@ -4,6 +4,7 @@ using ArtHub.BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtHub.BusinessObject.Migrations
 {
     [DbContext(typeof(ArtHub2024DbContext))]
-    partial class ArtHub2024DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240312134809_Update_OrderDetail")]
+    partial class Update_OrderDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,8 +260,6 @@ namespace ArtHub.BusinessObject.Migrations
 
                     b.HasIndex("ArtworkId");
 
-                    b.HasIndex("OrderId");
-
                     b.ToTable("OrderDetails");
                 });
 
@@ -402,15 +403,7 @@ namespace ArtHub.BusinessObject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ArtHub.BusinessObject.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Artwork");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("ArtHub.BusinessObject.Post", b =>

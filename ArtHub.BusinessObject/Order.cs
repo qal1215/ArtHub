@@ -7,16 +7,19 @@ namespace ArtHub.BusinessObject
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int Id { get; set; }
+        public int OrderId { get; set; }
 
-        public int BuyerIn { get; set; }
+        public int BuyerId { get; set; }
 
-        public Member Buyer { get; set; }
+        public Member Buyer { get; set; } = null!;
 
         public DateTime OrderDate { get; set; }
 
         public decimal TotalAmount { get; set; }
 
         public int TotalQuantity { get; set; }
+
+        [NotMapped]
+        public virtual IEnumerable<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }
