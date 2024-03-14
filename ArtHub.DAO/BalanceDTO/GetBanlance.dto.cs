@@ -8,10 +8,10 @@ namespace ArtHub.DTO.BalanceDTO
         [Required]
         public int AccountId { get; set; }
 
-        public TransactionType TransactionType { get; set; }
+        public TransactionType? TransactionType { get; set; }
 
-        public string FromDate { get; set; } = null!;
+        public DateTime? FromDate { get; set; }
 
-        public string ToDate { get; set; } = null!;
+        public DateTime? ToDate { get; set; }
     }
 }

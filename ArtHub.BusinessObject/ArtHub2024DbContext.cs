@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace ArtHub.BusinessObject;
 
@@ -37,19 +36,6 @@ public partial class ArtHub2024DbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseSqlServer(GetConnectionString());
-    }
-
-
-
-    private string GetConnectionString()
-    {
-        IConfiguration config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", true, true)
-            .Build();
-        var strConn = config.GetConnectionString("DefaultConnection");
-        return strConn;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

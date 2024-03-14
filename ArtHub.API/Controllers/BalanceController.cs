@@ -36,7 +36,7 @@ namespace ArtHub.API.Controllers
             if (getBanlance.AccountId <= 0)
                 return BadRequest(new { msg = "Invalid input" });
 
-            var balanceHistory = await _balanceService.GetHistoryTransactionsByAccountId(getBanlance.AccountId);
+            var balanceHistory = await _balanceService.GetHistoryTransactionsByAccountId(getBanlance);
 
             if (balanceHistory is null)
             {

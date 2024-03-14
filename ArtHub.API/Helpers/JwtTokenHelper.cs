@@ -39,5 +39,27 @@ namespace ArtHub.API.Helpers
 
             return tokenHandler.WriteToken(token);
         }
+
+        public bool ValidateJSONWebToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]!);
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidIssuer = _config["Jwt:Issuer"],
+                ValidAudience = _config["Jwt:Issuer"],
+                ValidateLifetime = true
+            }, out SecurityToken validatedToken);
+
+            if (validatedToken is null) return false;
+
+            if (validatedToken.ValidTo < DateTime.UtcNow) return false;
+
+            return true;
+        }
     }
 }

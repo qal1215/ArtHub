@@ -74,6 +74,8 @@ namespace ArtHub.Repository
                 history = history.Where(h => h.TransactionDate >= fromDate && h.TransactionDate <= todate);
             }
 
+            history = history.OrderByDescending(h => h.TransactionDate);
+
             return await history.ToListAsync();
         }
 

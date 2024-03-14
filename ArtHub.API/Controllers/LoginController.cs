@@ -12,7 +12,6 @@ namespace ArtHubAPI.Controllers
     [Route("login")]
     public class LoginController : ControllerBase
     {
-        private IConfiguration _config;
 
         private readonly IAccountService _accountService;
 
@@ -22,7 +21,6 @@ namespace ArtHubAPI.Controllers
 
         public LoginController(IMapper mapper, IConfiguration config, IAccountService accountService)
         {
-            _config = config;
             _accountService = accountService;
             _mapper = mapper;
             _jwtTokenHelper = new JwtTokenHelper(config);
@@ -98,7 +96,12 @@ namespace ArtHubAPI.Controllers
             return response;
         }
 
-
+        [Authorize]
+        [HttpPost("/reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPassword resetPassword)
+        {
+            return Ok();
+        }
     }
 }
 
