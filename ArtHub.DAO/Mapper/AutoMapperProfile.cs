@@ -5,6 +5,7 @@ using ArtHub.DTO.BalanceDTO;
 using ArtHub.DTO.OrderDTO;
 using ArtHub.DTO.PostCommentDTO;
 using ArtHub.DTO.RatingDTO;
+using ArtHub.DTO.ReportDTO;
 using AutoMapper;
 
 namespace ArtHub.DTO.Mapper
@@ -40,6 +41,8 @@ namespace ArtHub.DTO.Mapper
             CreateMap<CreateOrderDetail, OrderDetail>();
             CreateMap<Order, ViewOrder>();
             CreateMap<OrderDetail, ViewOrderDetail>();
+
+            CreateMap<CreateReport, Report>();
         }
     }
 }

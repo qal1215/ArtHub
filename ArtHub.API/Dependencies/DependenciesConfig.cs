@@ -1,8 +1,6 @@
 ﻿using ArtHub.BusinessObject;
-using ArtHub.Repository;
-using ArtHub.Repository.Contracts;
-using ArtHub.Service;
-using ArtHub.Service.Contracts;
+using ArtHub.Repository.Dependencies;
+using ArtHub.Service.Dependencies;
 
 namespace ArtHub.API.Dependencies
 {
@@ -12,24 +10,9 @@ namespace ArtHub.API.Dependencies
         {
             services.AddScoped<ArtHub2024DbContext>();
 
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IArtworkService, ArtworkService>();
-            services.AddScoped<IBalanceService, BalanceService>();
-            services.AddScoped<ICommentService, CommentService>();
-            services.AddScoped<IPostService, PostService>();
-            services.AddScoped<IRatingService, RatingService>();
-            services.AddScoped<IGenreService, GenreService>();
-            services.AddScoped<IOrderService, OrderService>();
+            RegisterDIRepository.RegisterDependencies(services);
 
-
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<IArtworkRepository, ArtworkRepository>();
-            services.AddScoped<ITransactionHistoryRepository, TransactionHistoryRepository>();
-            services.AddScoped<ICommentRepository, CommentRepository>();
-            services.AddScoped<IRatingRepository, RatingRepository>();
-            services.AddScoped<IPostRepository, PostRepository>();
-            services.AddScoped<IGenreRepository, GenreRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
+            RegisterDIService.RegisterDependencies(services);
         }
     }
 }
