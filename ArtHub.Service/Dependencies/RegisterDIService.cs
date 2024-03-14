@@ -16,6 +16,7 @@ namespace ArtHub.Service.Dependencies
             services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IAdminService, AdminService>();
         }
     }
 }

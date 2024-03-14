@@ -96,11 +96,25 @@ namespace ArtHubAPI.Controllers
             return response;
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpPost("/reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPassword resetPassword)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var isValid = _jwtTokenHelper.ValidateJSONWebToken(resetPassword.Token);
+            if (!isValid) return Unauthorized();
+
+            var accountIdString = _jwtTokenHelper.GetClaim(resetPassword.Token, "MemberId");
+            if (!int.TryParse(accountIdString, out var accountId)) return Unauthorized();
+
+            var result = await _accountService.ResetPasswork(accountId, resetPassword);
+            if (!result) return BadRequest();
+
+            return Ok(new { msg = "Change password successfully" });
         }
     }
 }

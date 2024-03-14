@@ -18,5 +18,7 @@ namespace ArtHub.Service.Contracts
         public Task<ViewAccount?> GetAccountById(int accountId);
 
         public Task<ViewAccount?> UpdateAccount(int accountId, UpdateAccount account);
+        Task<bool> ResetPasswork(int accountId, ResetPassword resetPassword);
+        Task<ViewAccount?> GetUserByEmail(string userEmail);
     }
 }

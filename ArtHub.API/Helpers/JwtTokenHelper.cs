@@ -61,5 +61,31 @@ namespace ArtHub.API.Helpers
 
             return true;
         }
+
+        public ClaimsPrincipal GetPrincipal(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]!);
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidIssuer = _config["Jwt:Issuer"],
+                ValidAudience = _config["Jwt:Issuer"],
+                ValidateLifetime = true
+            };
+
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+            return principal;
+        }
+
+        public string GetClaim(string token, string claimType)
+        {
+            var principal = GetPrincipal(token);
+            var claim = principal.Claims.FirstOrDefault(c => c.Type == claimType);
+            return claim?.Value;
+        }
     }
 }

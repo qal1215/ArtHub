@@ -1,5 +1,6 @@
 ﻿using ArtHub.DTO.BalanceDTO;
 using ArtHub.Service.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArtHub.API.Controllers
@@ -15,6 +16,7 @@ namespace ArtHub.API.Controllers
             _balanceService = balanceService;
         }
 
+        [Authorize]
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetBalance(int userId)
         {
@@ -27,6 +29,7 @@ namespace ArtHub.API.Controllers
             return Ok(balance);
         }
 
+        [Authorize]
         [HttpPost("history")]
         public async Task<IActionResult> GetHistoryAmount([FromBody] GetBanlance getBanlance)
         {
@@ -46,6 +49,7 @@ namespace ArtHub.API.Controllers
             return Ok(balanceHistory);
         }
 
+        [Authorize]
         [HttpPost("deposit")]
         public async Task<IActionResult> DepositAmountAsync([FromBody] TransactionAmount depositAmount)
         {
@@ -65,6 +69,7 @@ namespace ArtHub.API.Controllers
             return Ok(balanceHistory);
         }
 
+        [Authorize]
         [HttpPost("withdraw")]
         public async Task<IActionResult> WithdrawAmountAsync([FromBody] TransactionAmount withdrawAmount)
         {

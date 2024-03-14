@@ -22,20 +22,20 @@ namespace ArtHub.DTO.Mapper
 
             CreateMap<CreateArtwork, Artwork>();
             CreateMap<UpdateArtwork, Artwork>();
+            CreateMap<Artwork, ViewArtwork>();
 
             CreateMap<CreatePost, Post>();
             CreateMap<UpdatePost, Post>();
+            CreateMap<Post, ViewPost>();
             CreateMap<CreateComment, Comment>();
             CreateMap<UpdateComment, Comment>();
+            CreateMap<Comment, ViewComment>();
 
             CreateMap<Member, CurrentBalance>();
             CreateMap<PostRating, Rating>()
                 .ForMember(dest => dest.MemberId, opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dest => dest.Rate, opt => opt.MapFrom(src => src.Rating));
 
-            CreateMap<Artwork, ViewArtwork>();
-            CreateMap<Post, ViewPost>();
-            CreateMap<Comment, ViewComment>();
 
             CreateMap<CreateOrder, Order>();
             CreateMap<CreateOrderDetail, OrderDetail>();
