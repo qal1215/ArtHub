@@ -34,6 +34,7 @@ namespace ArtHub.API.Controllers
         public async Task<IActionResult> CreateReportAsync([FromBody] CreateReport createReport)
         {
             var report = await _reportService.CreateReportAsync(createReport);
+            if (report is null) return NotFound(new { msg = "Not found artwork" });
             return Ok(report);
         }
 
