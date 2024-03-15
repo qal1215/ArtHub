@@ -38,7 +38,7 @@ public class RatingService : IRatingService
         }
 
         var ratings = await _ratingRepository.GetRatingsByArtworkId(postRating.ArtworkId);
-        var avgRating = ratings.Average(r => r.Rate);
+        var avgRating = Math.Round(ratings.Average(r => r.Rate));
         artwork.ArtworkRating = (float)(ratings.Count > 0 ? avgRating : 0);
         return (await _artworkRepository.UpdateArtwork(artwork)) is not null;
     }
@@ -52,7 +52,7 @@ public class RatingService : IRatingService
         await _ratingRepository.UnRatingArtwork(userHasRatingArtwork);
 
         var ratings = await _ratingRepository.GetRatingsByArtworkId(postRating.ArtworkId);
-        var avgRating = ratings.Average(r => r.Rate);
+        var avgRating = Math.Round(ratings.Average(r => r.Rate));
         artwork.ArtworkRating = (float)(ratings.Count > 0 ? avgRating : 0);
         return (await _artworkRepository.UpdateArtwork(artwork)) is not null;
     }
