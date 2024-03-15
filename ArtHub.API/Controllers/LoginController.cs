@@ -12,7 +12,6 @@ namespace ArtHubAPI.Controllers
     [Route("login")]
     public class LoginController : ControllerBase
     {
-        private IConfiguration _config;
 
         private readonly IAccountService _accountService;
 
@@ -22,7 +21,6 @@ namespace ArtHubAPI.Controllers
 
         public LoginController(IMapper mapper, IConfiguration config, IAccountService accountService)
         {
-            _config = config;
             _accountService = accountService;
             _mapper = mapper;
             _jwtTokenHelper = new JwtTokenHelper(config);
@@ -98,7 +96,26 @@ namespace ArtHubAPI.Controllers
             return response;
         }
 
+        [AllowAnonymous]
+        [HttpPost("/reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPassword resetPassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
 
+            var isValid = _jwtTokenHelper.ValidateJSONWebToken(resetPassword.Token);
+            if (!isValid) return Unauthorized();
+
+            var accountIdString = _jwtTokenHelper.GetClaim(resetPassword.Token, "MemberId");
+            if (!int.TryParse(accountIdString, out var accountId)) return Unauthorized();
+
+            var result = await _accountService.ResetPasswork(accountId, resetPassword);
+            if (!result) return BadRequest();
+
+            return Ok(new { msg = "Change password successfully" });
+        }
     }
 }
 

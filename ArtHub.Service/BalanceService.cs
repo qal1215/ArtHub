@@ -19,11 +19,11 @@ namespace ArtHub.Service
             _transactionHistoryRepository = transactionHistoryRepository;
         }
 
-        public async Task<List<HistoryTransaction>?> GetHistoryTransactionsByAccountId(int accountId)
+        public async Task<List<HistoryTransaction>?> GetHistoryTransactionsByAccountId(GetBanlance getBalance)
         {
-            var account = await _accountRepository.IsExistedAccount(accountId);
+            var account = await _accountRepository.IsExistedAccount(getBalance.AccountId);
             if (!account) return null;
-            return await _transactionHistoryRepository.GetHistoryTransactionsByAccountId(accountId);
+            return await _transactionHistoryRepository.GetHistoryTransactionsByAccountId(getBalance.AccountId, getBalance.TransactionType, getBalance.FromDate, getBalance.ToDate);
         }
 
         public Task<List<HistoryTransaction>> GetHistoryTransactionsByArtworkId(int artworkId)

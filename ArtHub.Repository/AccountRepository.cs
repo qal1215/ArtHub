@@ -106,6 +106,13 @@ namespace ArtHub.Repository
             member!.Balance = member!.Balance + sellAmount;
             await _dbContext.SaveChangesAsync();
         }
+
+        public Task<Member?> GetBranchAccountByEmailAsync(string userEmail)
+        {
+            var member = _dbContext.Members
+                .FirstOrDefaultAsync(m => m.EmailAddress!.Contains(userEmail));
+            return member;
+        }
     }
 }
 

@@ -4,6 +4,7 @@ using ArtHub.BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtHub.BusinessObject.Migrations
 {
     [DbContext(typeof(ArtHub2024DbContext))]
-    partial class ArtHub2024DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240314152649_Add")]
+    partial class Add
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -327,40 +330,6 @@ namespace ArtHub.BusinessObject.Migrations
                     b.ToTable("Ratings");
                 });
 
-            modelBuilder.Entity("ArtHub.BusinessObject.Report", b =>
-                {
-                    b.Property<int>("ReportId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportId"));
-
-                    b.Property<int>("ArtworkId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsResolved")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ReportReason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ReporterId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ResolveDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ReportId");
-
-                    b.HasIndex("ArtworkId");
-
-                    b.HasIndex("ReporterId");
-
-                    b.ToTable("Reports");
-                });
-
             modelBuilder.Entity("ArtHub.BusinessObject.Artwork", b =>
                 {
                     b.HasOne("ArtHub.BusinessObject.Member", "Artist")
@@ -489,25 +458,6 @@ namespace ArtHub.BusinessObject.Migrations
                     b.Navigation("Artwork");
 
                     b.Navigation("Member");
-                });
-
-            modelBuilder.Entity("ArtHub.BusinessObject.Report", b =>
-                {
-                    b.HasOne("ArtHub.BusinessObject.Artwork", "Artwork")
-                        .WithMany()
-                        .HasForeignKey("ArtworkId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ArtHub.BusinessObject.Member", "Reporter")
-                        .WithMany()
-                        .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Artwork");
-
-                    b.Navigation("Reporter");
                 });
 
             modelBuilder.Entity("ArtHub.BusinessObject.Genre", b =>

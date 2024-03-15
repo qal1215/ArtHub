@@ -25,6 +25,10 @@ namespace ArtHub.BusinessObject
 
         public bool IsBuyAvailable { get; set; }
 
+        public BanStatus BanStatus { get; set; }
+
+        public string? BanReason { get; set; }
+
         public float ArtworkRating { get; set; }
 
         public DateTime ArtworkDate { get; set; }
@@ -32,5 +36,12 @@ namespace ArtHub.BusinessObject
         public int GenreId { get; set; }
 
         public Genre Genre { get; set; } = null!;
+    }
+
+    public enum BanStatus
+    {
+        None = 0,
+        Banned = 1,
+        Pending = 2
     }
 }

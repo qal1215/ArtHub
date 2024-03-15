@@ -92,5 +92,26 @@ namespace ArtHub.Service
         }
 
         public async Task<bool> IsExistedAccount(int accountId) => await _accountRepository.IsExistedAccount(accountId);
+
+        public async Task<bool> ResetPasswork(int accountId, ResetPassword resetPassword)
+        {
+            var account = await _accountRepository.GetBranchAccountByIdAsync(accountId);
+            if (account is null || account.AccountId != accountId) return false;
+
+            if (resetPassword.NewPassword != resetPassword.ConfirmPassword) return false;
+
+            account.Password = resetPassword.NewPassword;
+
+            var updated = await _accountRepository.UpdateAccountAsync(accountId, account);
+            return updated is not null;
+        }
+
+        public async Task<ViewAccount?> GetUserByEmail(string userEmail)
+        {
+            var account = await _accountRepository.GetBranchAccountByEmailAsync(userEmail);
+            if (account is null) return null;
+            var viewAccount = _mapper.Map<ViewAccount>(account);
+            return viewAccount;
+        }
     }
 }

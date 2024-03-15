@@ -4,6 +4,7 @@ using ArtHub.BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtHub.BusinessObject.Migrations
 {
     [DbContext(typeof(ArtHub2024DbContext))]
-    partial class ArtHub2024DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240314160807_Add_ReportTable")]
+    partial class Add_ReportTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -338,19 +341,8 @@ namespace ArtHub.BusinessObject.Migrations
                     b.Property<int>("ArtworkId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsResolved")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ReportReason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("ReporterId")
                         .HasColumnType("int");
-
-                    b.Property<string>("ResolveDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReportId");
 

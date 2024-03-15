@@ -5,7 +5,7 @@ namespace ArtHub.Service.Contracts
 {
     public interface IBalanceService
     {
-        Task<List<HistoryTransaction>?> GetHistoryTransactionsByAccountId(int accountId);
+        Task<List<HistoryTransaction>?> GetHistoryTransactionsByAccountId(GetBanlance getBalance);
 
         Task<List<HistoryTransaction>> GetHistoryTransactionsByArtworkId(int artworkId);
 

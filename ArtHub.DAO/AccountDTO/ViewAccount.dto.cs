@@ -16,5 +16,7 @@ namespace ArtHub.DTO.AccountDTO
         public Role? Role { get; set; }
 
         public IEnumerable<ViewArtwork> ViewArtworks { get; set; } = new List<ViewArtwork>();
+
+        public decimal Balance { get; set; }
     }
 }
