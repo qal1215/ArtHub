@@ -1,6 +1,7 @@
 ﻿using ArtHub.DTO.AccountDTO;
 using ArtHub.Service.Contracts;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArtHub.API.Controllers
@@ -34,6 +35,7 @@ namespace ArtHub.API.Controllers
             return Ok(member);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMemberProfileAsync(int id, [FromBody] UpdateAccount account)
         {

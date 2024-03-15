@@ -12,12 +12,16 @@ namespace ArtHub.Service
     {
         private readonly IArtworkRepository _artworkRepository;
         private readonly IGenreRepository _genreRepository;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IAccountRepository _accountRepository;
         private readonly IMapper _mapper;
 
-        public ArtworkService(IMapper mapper, IArtworkRepository artworkRepository, IGenreRepository genreRepository)
+        public ArtworkService(IMapper mapper, IArtworkRepository artworkRepository, IGenreRepository genreRepository, IOrderRepository orderRepository, IAccountRepository accountRepository)
         {
             _artworkRepository = artworkRepository;
             _genreRepository = genreRepository;
+            _orderRepository = orderRepository;
+            _accountRepository = accountRepository;
             _mapper = mapper;
         }
 
@@ -112,6 +116,15 @@ namespace ArtHub.Service
                 TotalPages = paged.TotalPages,
                 Items = items
             };
+        }
+
+        public async Task<IEnumerable<ViewArtwork>?> GetArtworksByOwnerId(int ownerId)
+        {
+            var isOwnerExist = await _accountRepository.IsExistedAccount(ownerId);
+            if (!isOwnerExist) return null;
+            var artworkIdsOwner = await _orderRepository.GetArtworkIdByOwnerId(ownerId);
+            var listArtwork = await _artworkRepository.GetArtworkPredicate(a => artworkIdsOwner.Contains(a.ArtworkId));
+            return _mapper.Map<List<ViewArtwork>>(listArtwork);
         }
     }
 }

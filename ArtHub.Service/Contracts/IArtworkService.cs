@@ -6,18 +6,19 @@ namespace ArtHub.Service.Contracts
 {
     public interface IArtworkService
     {
-        public Task<ViewArtwork?> GetArtworkById(int id);
+        Task<ViewArtwork?> GetArtworkById(int id);
 
-        public Task<IEnumerable<ViewArtwork>> GetArtworksByArtistId(int artistId);
+        Task<IEnumerable<ViewArtwork>> GetArtworksByArtistId(int artistId);
 
-        public Task<IEnumerable<Artwork>> GetArtworksByTitle(string title);
+        Task<IEnumerable<Artwork>> GetArtworksByTitle(string title);
 
-        public Task<Artwork?> UpdateArtwork(UpdateArtwork artwork);
+        Task<Artwork?> UpdateArtwork(UpdateArtwork artwork);
 
-        public Task<ViewArtwork> CreateArtwork(CreateArtwork artwork);
+        Task<ViewArtwork> CreateArtwork(CreateArtwork artwork);
 
-        public Task<bool> DeleteArtwork(int id);
+        Task<bool> DeleteArtwork(int id);
 
-        public Task<PagedResult<ViewArtwork>> GetArtworksPaging(QueryPaging queryPaging);
+        Task<PagedResult<ViewArtwork>> GetArtworksPaging(QueryPaging queryPaging);
+        Task<IEnumerable<ViewArtwork>?> GetArtworksByOwnerId(int userId);
     }
 }

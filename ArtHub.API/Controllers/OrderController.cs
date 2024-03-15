@@ -1,5 +1,6 @@
 ﻿using ArtHub.DTO.OrderDTO;
 using ArtHub.Service.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArtHub.API.Controllers
@@ -15,6 +16,7 @@ namespace ArtHub.API.Controllers
             _orderService = orderService;
         }
 
+        [Authorize]
         [HttpPost("")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrder creating)
         {

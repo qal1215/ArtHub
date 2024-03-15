@@ -1,5 +1,6 @@
 ﻿using ArtHub.DTO.RatingDTO;
 using ArtHub.Service.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArtHub.API.Controllers
@@ -15,6 +16,7 @@ namespace ArtHub.API.Controllers
             _ratingService = ratingService;
         }
 
+        [Authorize]
         [HttpPost("")]
         public async Task<IActionResult> AddRatingByArtworkId([FromBody] PostRating postRating)
         {
@@ -24,6 +26,7 @@ namespace ArtHub.API.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut("")]
         public async Task<IActionResult> UpdatingRatingByArtworkId([FromBody] PostRating postRating)
         {
@@ -33,6 +36,7 @@ namespace ArtHub.API.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete("")]
         public async Task<IActionResult> DeleteRating([FromBody] PostRating postRating)
         {
