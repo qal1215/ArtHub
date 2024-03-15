@@ -24,26 +24,52 @@ namespace ArtHub.Service
             _balanceService = balanceService;
         }
 
-        public async Task<ViewOrder> CreateOrder(CreateOrder order)
+        public async Task<ResultViewOrder> CreateOrder(CreateOrder order)
         {
             var totalAmount = await _artworkRepository
                 .GetTotalPriceByArtworkIds(order.OrderDetails.Select(od => od.ArtworkId).ToArray());
 
-            if (totalAmount != order.TotalAmount) throw new Exception("Total amount is not correct");
+            if (totalAmount != order.TotalAmount)
+            {
+                return new ResultViewOrder
+                {
+                    OrderStatus = OrderStatus.Failed,
+                    Message = "Total amount is not correct"
+                };
+            }
 
             var userBalance = await _accountRepository.GetBalanceByAccountId(order.BuyerId);
 
-            if (userBalance < totalAmount) throw new Exception("Not enough balance");
+            if (userBalance < totalAmount)
+            {
+                return new ResultViewOrder
+                {
+                    OrderStatus = OrderStatus.Failed,
+                    Message = "Balance not enough money!"
+                };
+            }
 
             foreach (var artwork in order.OrderDetails)
             {
                 var hasBuyArtwork = await _orderRepository.MemberHasBuyArtwork(artwork.ArtworkId, order.BuyerId);
                 if (hasBuyArtwork)
-                    throw new Exception("You have already bought artwork has id: " + artwork.ArtworkId);
+                {
+                    return new ResultViewOrder
+                    {
+                        OrderStatus = OrderStatus.Failed,
+                        Message = "You have already bought artwork has id: " + artwork.ArtworkId
+                    };
+                }
 
                 var isBuyable = await _artworkRepository.IsBuyAvailable(artwork.ArtworkId);
                 if (!isBuyable)
-                    throw new Exception("Artwork has id: " + artwork.ArtworkId + " is not available for sell");
+                {
+                    return new ResultViewOrder
+                    {
+                        OrderStatus = OrderStatus.Failed,
+                        Message = "Artwork has id: " + artwork.ArtworkId + " is not available for sell"
+                    };
+                }
             }
 
             var orderDetails = _mapper.Map<List<OrderDetail>>(order.OrderDetails);
@@ -75,7 +101,13 @@ namespace ArtHub.Service
                 await _balanceService.PurchaseArtworkAsync(purchaseAmount, od.ArtworkId);
             }
 
-            return _mapper.Map<ViewOrder>(result);
+            var viewOrder = _mapper.Map<ViewOrder>(result);
+
+            return new ResultViewOrder
+            {
+                OrderStatus = OrderStatus.Success,
+                ViewOrder = viewOrder
+            };
         }
 
         public async Task<ViewOrder?> GetOrderById(int id)

@@ -19,7 +19,10 @@ namespace ArtHub.API.Controllers
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrder creating)
         {
             var newOrder = await _orderService.CreateOrder(creating);
-            return CreatedAtAction(nameof(GetOrderById), new { orderId = newOrder.OrderId }, newOrder);
+            if (newOrder.OrderStatus is OrderStatus.Failed || newOrder.ViewOrder is null)
+                return BadRequest(newOrder.Message);
+
+            return CreatedAtAction(nameof(GetOrderById), new { orderId = newOrder.ViewOrder!.OrderId }, newOrder.ViewOrder);
         }
 
         [HttpGet("{orderId}")]

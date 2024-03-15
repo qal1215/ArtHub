@@ -19,8 +19,13 @@ namespace ArtHub.Service
             _artworkRepository = artworkRepository;
         }
 
-        public async Task<Report> CreateReportAsync(CreateReport reportDto)
+        public async Task<Report?> CreateReportAsync(CreateReport reportDto)
         {
+            var isExitArtwork = await _artworkRepository.IsExistArtwork(reportDto.ArtworkId);
+            if (!isExitArtwork)
+            {
+                return null;
+            }
             var report = _mapper.Map<Report>(reportDto);
             report.ResolveDescription = "";
             var createdReport = await _reportRepository.CreateReport(report);
