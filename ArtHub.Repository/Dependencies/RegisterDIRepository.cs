@@ -16,7 +16,7 @@ namespace ArtHub.Repository.Dependencies
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
-
+            services.AddScoped<IFollowRepository, FollowRepository>();
         }
     }
 }

@@ -14,7 +14,7 @@ public partial class ArtHub2024DbContext : DbContext
 
     public virtual DbSet<Artwork> Artworks { get; set; }
 
-    public virtual DbSet<FollowInfo> FollowInfos { get; set; }
+    public virtual DbSet<FollowInfos> FollowInfos { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
 
