@@ -29,12 +29,16 @@ namespace ArtHub.Repository
 
         public async Task<IEnumerable<Report>> GetReports()
         {
-            return await _dbContext.Reports.ToListAsync();
+            return await _dbContext.Reports
+                .Include(r => r.Artwork)
+                .ToListAsync();
         }
 
-        public async Task<Report?> UpdateReport(int id, UpdateReport updateReport)
+        public async Task<Report?> UpdateReport(int reportId, UpdateReport updateReport)
         {
-            var report = await _dbContext.Reports.FindAsync(id);
+            var report = await _dbContext.Reports
+                .Include(r => r.Artwork)
+                .FirstOrDefaultAsync(r => r.ReporterId == reportId);
             if (report == null)
             {
                 return null;

@@ -13,6 +13,7 @@
                 var sourcePropertyType = sourceProperty.PropertyType;
 
                 var destinationProperty = destination!.GetType().GetProperty(sourcePropertyName);
+                if (destinationProperty is null) continue;
                 var destinationPropertyType = destinationProperty!.PropertyType;
 
                 if (sourcePropertyType == destinationPropertyType)

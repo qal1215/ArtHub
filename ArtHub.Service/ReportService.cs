@@ -10,16 +10,19 @@ namespace ArtHub.Service
     {
         private readonly IMapper _mapper;
         private readonly IReportRepository _reportRepository;
+        private readonly IArtworkRepository _artworkRepository;
 
-        public ReportService(IMapper mapper, IReportRepository reportRepository)
+        public ReportService(IMapper mapper, IReportRepository reportRepository, IArtworkRepository artworkRepository)
         {
             _mapper = mapper;
             _reportRepository = reportRepository;
+            _artworkRepository = artworkRepository;
         }
 
         public async Task<Report> CreateReportAsync(CreateReport reportDto)
         {
             var report = _mapper.Map<Report>(reportDto);
+            report.ResolveDescription = "";
             var createdReport = await _reportRepository.CreateReport(report);
             return createdReport;
         }
@@ -39,6 +42,20 @@ namespace ArtHub.Service
         public async Task<Report?> UpdateReportAsync(int reportId, UpdateReport report)
         {
             var updatedReport = await _reportRepository.UpdateReport(reportId, report);
+            if (updatedReport == null)
+            {
+                return null;
+            }
+
+            if (!report.IsBanArtwork) return updatedReport;
+
+            var artwork = await _artworkRepository.GetArtwork(updatedReport.ArtworkId);
+            if (artwork is null) return updatedReport;
+
+            artwork.BanStatus = BanStatus.Banned;
+            artwork.BanReason = report.ResolveDescription;
+            await _artworkRepository.UpdateArtwork(artwork);
+
             return updatedReport;
         }
     }

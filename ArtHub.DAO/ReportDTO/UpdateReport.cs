@@ -8,10 +8,13 @@ namespace ArtHub.DTO.ReportDTO
         public int ReportId { get; set; }
 
         [Required]
-        public string ReportDescription { get; set; } = null!;
+        public string? ResolveDescription { get; set; }
 
         [Required]
         public bool IsResolved { get; set; }
+
+        [Required]
+        public bool IsBanArtwork { get; set; }
 
     }
 }

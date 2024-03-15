@@ -52,16 +52,24 @@ namespace ArtHub.Repository
 
         public async Task<Artwork?> GetArtwork(int artworkId)
         {
-            var artwork = await _dbContext.Artworks.FirstOrDefaultAsync(a => a.ArtworkId == artworkId);
+            var artwork = await _dbContext.Artworks
+                .Where(Artwork => Artwork.BanStatus != BanStatus.Banned)
+                .FirstOrDefaultAsync(a => a.ArtworkId == artworkId);
 
             return artwork;
         }
 
         public async Task<IEnumerable<Artwork>> GetArtworkPredicate(Expression<Func<Artwork, bool>> predicate)
-            => await _dbContext.Artworks.Where(predicate).ToListAsync();
+            => await _dbContext.Artworks
+                .Where(Artwork => Artwork.BanStatus != BanStatus.Banned)
+                .Where(predicate)
+                .ToListAsync();
 
         public async Task<IEnumerable<Artwork>> GetArtworksByArtistId(int artistId)
-            => await _dbContext.Artworks.Where(a => a.ArtistID == artistId).ToListAsync();
+            => await _dbContext.Artworks
+            .Where(Artwork => Artwork.BanStatus != BanStatus.Banned)
+            .Where(a => a.ArtistID == artistId)
+            .ToListAsync();
 
         public async Task<bool> IsExistArtwork(int artworkId)
             => await _dbContext.Artworks.AnyAsync(a => a.ArtworkId == artworkId);
@@ -88,6 +96,7 @@ namespace ArtHub.Repository
         public async Task<PagedResult<Artwork>> GetArtworksPaging(int page, int pageSize, string q)
         {
             var artworks = await _dbContext.Artworks
+                .Where(Artwork => Artwork.BanStatus != BanStatus.Banned)
                 .Where(artwork => artwork.Description.ToUpper().Contains(q)
                 || artwork.Name.ToUpper().Contains(q)
                 || artwork.Genre.Name.ToUpper().Contains(q))
@@ -96,6 +105,7 @@ namespace ArtHub.Repository
                 .ToListAsync();
 
             var totalItem = await _dbContext.Artworks
+                .Where(Artwork => Artwork.BanStatus != BanStatus.Banned)
                 .Where(artwork => artwork.Description.ToUpper().Contains(q)
                 || artwork.Name.ToUpper().Contains(q)
                 || artwork.Genre.Name.ToUpper().Contains(q))

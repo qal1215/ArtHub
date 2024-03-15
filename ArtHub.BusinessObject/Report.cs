@@ -11,7 +11,7 @@ namespace ArtHub.BusinessObject
 
         public string ReportReason { get; set; } = null!;
 
-        public string ResolveDescription { get; set; } = null!;
+        public string? ResolveDescription { get; set; }
 
         public bool IsResolved { get; set; }
 
