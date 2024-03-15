@@ -2,6 +2,7 @@
 using ArtHub.DTO.AccountDTO;
 using ArtHub.DTO.ArtworkDTO;
 using ArtHub.DTO.BalanceDTO;
+using ArtHub.DTO.FollowDTO;
 using ArtHub.DTO.OrderDTO;
 using ArtHub.DTO.PostCommentDTO;
 using ArtHub.DTO.RatingDTO;
@@ -43,6 +44,9 @@ namespace ArtHub.DTO.Mapper
             CreateMap<OrderDetail, ViewOrderDetail>();
 
             CreateMap<CreateReport, Report>();
+
+            CreateMap<CreateFollow, FollowInfos>()
+                .ForMember(dest => dest.FolloweeId, opt => opt.MapFrom(src => src.ArtistId));
         }
     }
 }

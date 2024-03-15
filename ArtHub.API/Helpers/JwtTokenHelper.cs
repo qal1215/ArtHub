@@ -14,7 +14,7 @@ namespace ArtHub.API.Helpers
             _config = config;
         }
 
-        public string GenerateJSONWebToken(string email, int accountId, int role)
+        public string GenerateJSONWebToken(string email, int accountId, int role, string name)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -26,7 +26,8 @@ namespace ArtHub.API.Helpers
                     new Claim(JwtRegisteredClaimNames.Email, email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()!),
                     new Claim("MemberId",accountId.ToString()),
-                    new Claim("Role", role.ToString())
+                    new Claim("Role", role.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Name,name)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = credentials,

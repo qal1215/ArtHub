@@ -60,7 +60,7 @@ namespace ArtHubAPI.Controllers
 
                 if (userAdded)
                 {
-                    var tokenString = _jwtTokenHelper.GenerateJSONWebToken(account.EmailAddress!, account.AccountId, (int)account.Role!);
+                    var tokenString = _jwtTokenHelper.GenerateJSONWebToken(account.EmailAddress!, account.AccountId, (int)account.Role!, account.FullName);
                     response = Ok(new { token = tokenString });
                 }
             }
@@ -89,7 +89,7 @@ namespace ArtHubAPI.Controllers
 
             if (user != null)
             {
-                var tokenString = _jwtTokenHelper.GenerateJSONWebToken(user.EmailAddress!, user.AccountId, (int)user.Role!);
+                var tokenString = _jwtTokenHelper.GenerateJSONWebToken(user.EmailAddress!, user.AccountId, (int)user.Role!, user.FullName);
                 response = Ok(new { token = tokenString });
             }
 

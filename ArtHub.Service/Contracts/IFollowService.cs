@@ -1,0 +1,14 @@
+﻿using ArtHub.DTO.FollowDTO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ArtHub.Service.Contracts
+{
+    public interface IFollowService
+    {
+        Task<bool> FollowArtist(CreateFollow createFollow);
+    }
+}

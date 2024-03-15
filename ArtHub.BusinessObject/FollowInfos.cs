@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ArtHub.BusinessObject
 {
-    public class FollowInfo
+    public class FollowInfos
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
