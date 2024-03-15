@@ -25,6 +25,7 @@ namespace ArtHub.Repository
             return await _dbContext.FollowInfos
                 .Where(f => f.FolloweeId == artistId)
                 .Select(f => f.FollowerId)
+                .Distinct()
                 .ToListAsync();
         }
 
@@ -44,13 +45,19 @@ namespace ArtHub.Repository
         public async Task<int> GetFollowersCount(int artistId)
         {
             return await _dbContext.FollowInfos
-                .CountAsync(f => f.FolloweeId == artistId);
+                .Where(f => f.FolloweeId == artistId)
+                .Select(f => f.FollowerId)
+                .Distinct()
+                .CountAsync();
         }
 
         public async Task<int> GetFollowingsCount(int followerId)
         {
             return await _dbContext.FollowInfos
-                .CountAsync(f => f.FollowerId == followerId);
+                .Where(f => f.FollowerId == followerId)
+                .Select(f => f.FolloweeId)
+                .Distinct()
+                .CountAsync();
         }
 
         public async Task<IEnumerable<int>> GetListFollowingId(int followerId)
@@ -58,6 +65,7 @@ namespace ArtHub.Repository
             return await _dbContext.FollowInfos
                 .Where(f => f.FollowerId == followerId)
                 .Select(f => f.FolloweeId)
+                .Distinct()
                 .ToListAsync();
         }
     }

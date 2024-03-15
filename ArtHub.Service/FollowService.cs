@@ -19,6 +19,8 @@ namespace ArtHub.Service
 
         public async Task<bool> FollowArtist(CreateFollow createFollow)
         {
+            var isFollowing = await _followRepository.IsFollowed(createFollow.FollowerId, createFollow.ArtistId);
+            if (isFollowing) return true;
             var follow = _mapper.Map<FollowInfos>(createFollow);
             return await _followRepository.FollowArtist(follow);
         }
