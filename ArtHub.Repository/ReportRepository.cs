@@ -38,7 +38,7 @@ namespace ArtHub.Repository
         {
             var report = await _dbContext.Reports
                 .Include(r => r.Artwork)
-                .FirstOrDefaultAsync(r => r.ReporterId == reportId);
+                .FirstOrDefaultAsync(r => r.ReportId == reportId);
             if (report == null)
             {
                 return null;

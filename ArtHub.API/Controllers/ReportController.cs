@@ -41,7 +41,7 @@ namespace ArtHub.API.Controllers
         public async Task<IActionResult> UpdateReportAsync([FromRoute] int reportId, [FromBody] UpdateReport updateReport)
         {
             var report = await _reportService.UpdateReportAsync(reportId, updateReport);
-            if (report is null) return NotFound();
+            if (report is null) return BadRequest();
             return Ok(report);
         }
     }
