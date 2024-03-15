@@ -20,7 +20,7 @@ namespace ArtHub.API.Controllers
         {
             var newOrder = await _orderService.CreateOrder(creating);
             if (newOrder.OrderStatus is OrderStatus.Failed || newOrder.ViewOrder is null)
-                return BadRequest(newOrder.Message);
+                return BadRequest(new { msg = newOrder.Message });
 
             return CreatedAtAction(nameof(GetOrderById), new { orderId = newOrder.ViewOrder!.OrderId }, newOrder.ViewOrder);
         }
