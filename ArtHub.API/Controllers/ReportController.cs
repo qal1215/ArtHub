@@ -1,5 +1,6 @@
 ﻿using ArtHub.DTO.ReportDTO;
 using ArtHub.Service.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArtHub.API.Controllers
@@ -30,6 +31,7 @@ namespace ArtHub.API.Controllers
             return Ok(report);
         }
 
+        [Authorize]
         [HttpPost("")]
         public async Task<IActionResult> CreateReportAsync([FromBody] CreateReport createReport)
         {
@@ -38,6 +40,7 @@ namespace ArtHub.API.Controllers
             return Ok(report);
         }
 
+        [Authorize]
         [HttpPut("{reportId}")]
         public async Task<IActionResult> UpdateReportAsync([FromRoute] int reportId, [FromBody] UpdateReport updateReport)
         {

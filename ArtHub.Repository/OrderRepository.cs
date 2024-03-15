@@ -71,5 +71,13 @@ namespace ArtHub.Repository
                 .Where(o => o.BuyerId == memberId)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<int>> GetArtworkIdByOwnerId(int ownerId)
+        {
+            return await _dbContext.OrderDetails
+                .Where(od => od.Order.BuyerId == ownerId)
+                .Select(od => od.ArtworkId)
+                .ToListAsync();
+        }
     }
 }

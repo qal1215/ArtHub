@@ -1,6 +1,7 @@
 ﻿using ArtHub.DTO.PostCommentDTO;
 using ArtHub.Service.Contracts;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArtHub.API.Controllers
@@ -29,6 +30,7 @@ namespace ArtHub.API.Controllers
             return Ok(comments);
         }
 
+        [Authorize]
         [HttpPost("")]
         public async Task<IActionResult> CreateComment([FromBody] CreateComment creating)
         {
@@ -49,6 +51,7 @@ namespace ArtHub.API.Controllers
             return Ok(comment);
         }
 
+        [Authorize]
         [HttpDelete("{commentId}")]
         public async Task<IActionResult> DeleteComment([FromRoute] int commentId)
         {
@@ -59,6 +62,7 @@ namespace ArtHub.API.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpPut("{commentId}")]
         public async Task<IActionResult> UpdateComment([FromRoute] int commentId, [FromBody] UpdateComment updating)
         {

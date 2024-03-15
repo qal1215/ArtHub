@@ -19,5 +19,6 @@ namespace ArtHub.Repository.Contracts
         Task SaveChangeAsync();
         Task<bool> MemberHasBuyArtwork(int artworkId, int buyerId);
         Task<IEnumerable<Order>> GetOrdersByBuyerIdAsync(int memberId);
+        Task<IEnumerable<int>> GetArtworkIdByOwnerId(int ownerId);
     }
 }

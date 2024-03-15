@@ -2,6 +2,7 @@
 using ArtHub.DTO.ModelResult;
 using ArtHub.Service.Contracts;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArtHubAPI.Controllers
@@ -29,6 +30,7 @@ namespace ArtHubAPI.Controllers
             return Ok(artwork);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddArtwork([FromBody] CreateArtwork creating)
         {
@@ -53,6 +55,7 @@ namespace ArtHubAPI.Controllers
             return Ok(artworkPaged);
         }
 
+        [Authorize]
         [HttpPut("{artworkId}")]
         public async Task<IActionResult> UpdateArtwork([FromRoute] int artworkId, [FromBody] UpdateArtwork update)
         {
@@ -71,6 +74,7 @@ namespace ArtHubAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpDelete("{artworkId}")]
         public async Task<IActionResult> DeleteArtwork([FromRoute] int artworkId)
         {
@@ -78,6 +82,17 @@ namespace ArtHubAPI.Controllers
             if (!result)
                 return NotFound();
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("owner/{userId}")]
+        public async Task<IActionResult> GetArtworkByOwnerId([FromRoute] int userId)
+        {
+            var listArtwork = await _artworkService.GetArtworksByOwnerId(userId);
+            if (listArtwork is null)
+                return NotFound();
+
+            return Ok(listArtwork);
         }
     }
 }
