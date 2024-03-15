@@ -1,14 +1,15 @@
 ﻿using ArtHub.DTO.FollowDTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArtHub.Service.Contracts
 {
     public interface IFollowService
     {
         Task<bool> FollowArtist(CreateFollow createFollow);
+        Task<int> GetFollowersCount(int artistId);
+        Task<int> GetFollowingsCount(int followerId);
+        Task<IEnumerable<int>> GetListFollowerId(int artistId);
+        Task<IEnumerable<int>> GetListFollowingId(int followerId);
+        Task<bool> IsFollowed(int followerId, int followeeId);
+        Task<bool> UnFollowArtist(CreateFollow createFollow);
     }
 }
