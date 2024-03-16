@@ -50,7 +50,8 @@ sequenceDiagram
                   OS->>+BS: UpdateSellBalanceAsync(transactionAmount, artworkId)
                   OS->>BS: UpdateBuyBalanceAsync(transactionAmount, accountId)
                   BS-->>-OS: HistoryTransaction
-                  OS-->>OC: 201 Created
+                  OS-->>OC: HistoryTransaction
+                  OC-->>C: 201 Created
             end
       end
 ```
