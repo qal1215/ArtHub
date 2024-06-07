@@ -1,4 +1,5 @@
 ﻿using ArtHub.API.Dependencies;
+using ArtHub.API.Extensions;
 using ArtHub.BusinessObject;
 using ArtHub.DTO.Mapper;
 using AutoMapper;
@@ -86,6 +87,7 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 var app = builder.Build();
+app.CreateNewDbIfNotExists();
 app.UseCors("Default");
 
 app.UseSwagger();

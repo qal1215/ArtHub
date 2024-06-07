@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+    arthub.api:
+        build:
+            context: .
+            dockerfile: ArtHub.API/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__DefaultConnection=Server=arthubDb,1433;Database=ArtHub;User Id=sa;Password=123@456Abcdf;Trust Server Certificate=true;
+        ports:
+            - "5000:80"
+        depends_on:
+            - arthubDb
+    arthubDb:
+        environment:
+            SA_PASSWORD: "123@456Abcdf"
+            ACCEPT_EULA: "Y"
+        ports:
+            - 1443:1433
+        volumes:
+            - arthubDb_data:/var/opt/mssql
